@@ -12,6 +12,15 @@ Design of a RISC V CPU core, implementing all the necessary components and pipel
 
 This logic is responsible for the program counter (PC). The PC identifies the instruction our CPU will execute next. Most instructions execute sequentially, meaning the default behavior of the PC is to increment to the following instruction each clock cycle. Branch and jump instructions, however, are non-sequential. They specify a target instruction to execute next, and the PC logic must update the PC accordingly.
 
+Initially, we will implement only sequential fetching, so the PC update will be, for now, simply a counter. Note that:
+
+The PC is a byte address, meaning it references the first byte of an instruction in the IMem. Instructions are 4 bytes long, so, although the PC increment is depicted as "+1" (instruction), the actual increment must be by 4 (bytes). The lowest two PC bits must always be zero in normal operation.
+Instruction fetching should start from address zero, so the first **$pc** value with $reset deasserted should be zero, as is implemented in the logic diagram below.
+Unlike our earlier counter circuit, for readability, we use unique names for **$pc** and **$next_pc**, by assigning **$pc** to the previous **$next_pc**.
+ 
+
+
+
 # Fetch: 
 
 The instruction memory (IMem) holds the instructions to execute. To read the IMem, or "fetch", we simply pull out the instruction pointed to by the PC.
