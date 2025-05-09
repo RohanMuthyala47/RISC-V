@@ -31,6 +31,8 @@ Now that we have an instruction to execute, we must interpret, or decode, it. We
 
 ![image](https://github.com/user-attachments/assets/a43ad678-0ebb-42f2-8721-564b1e95f25e)
 
+![image](https://github.com/user-attachments/assets/bfda98b0-d586-4352-a7dc-f9096fa9ccb3)
+
 
 # Register File Read: 
 
