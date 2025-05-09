@@ -29,6 +29,9 @@ The instruction memory (IMem) holds the instructions to execute. To read the IMe
 
 Now that we have an instruction to execute, we must interpret, or decode, it. We must break it into fields based on its type. These fields would tell us which registers to read, which operation to perform, etc.
 
+![image](https://github.com/user-attachments/assets/a43ad678-0ebb-42f2-8721-564b1e95f25e)
+
+
 # Register File Read: 
 
 The register file is a small local storage of values the program is actively working with. We decoded the instruction to determine which registers we need to operate on. Now, we need to read those registers from the register file.
