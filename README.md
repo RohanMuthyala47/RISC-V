@@ -19,8 +19,6 @@ Instruction fetching should start from address zero, so the first **$pc** value 
 Unlike our earlier counter circuit, for readability, we use unique names for **$pc** and **$next_pc**, by assigning **$pc** to the previous **$next_pc**.
  
 
-
-
 # Fetch: 
 
 The instruction memory (IMem) holds the instructions to execute. To read the IMem, or "fetch", we simply pull out the instruction pointed to by the PC.
@@ -42,6 +40,9 @@ Now we need to determine the specific instruction. This is determined from the *
 # Register File Read: 
 
 The register file is a small local storage of values the program is actively working with. We decoded the instruction to determine which registers we need to operate on. Now, we need to read those registers from the register file.
+
+![image](https://github.com/user-attachments/assets/c3a88849-c4ff-4733-9aa9-9b1b66c88c12)
+
 
 # Arithmetic Logic Unit (ALU): 
 
