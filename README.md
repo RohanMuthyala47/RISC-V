@@ -56,6 +56,13 @@ Now the result value from the ALU can be written back to the destination registe
 
 ![image](https://github.com/user-attachments/assets/d09dd864-f6dc-476e-8726-a184850094b2)
 
+BEQ; Branch if equal;	x1 == x2
+BNE;	Branch if not equal;	x1 != x2
+BLT;	Branch if less than;	(x1 < x2) ^ (x1[31] != x2[31])
+BGE;	Branch if greater than or equal;	(x1 >= x2) ^ (x1[31] != x2[31])
+BLTU;	Branch if less than, unsigned;	x1 < x2
+BGEU;	Branch if greater than or equal, unsigned;	x1 >= x2
+
 
 # DMem: 
 
