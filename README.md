@@ -2,6 +2,7 @@
 Design of a RISC V CPU core, implementing all the necessary components and pipelining
 
 I have started this project by enrolling in the Edx Course:
+
 **LinuxFoundationX LFD111x -Building a RISC-V CPU Core**
 and using the IDE **MakerChip**
 
