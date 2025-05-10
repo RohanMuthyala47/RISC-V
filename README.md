@@ -83,4 +83,4 @@ BGEU -	Branch if greater than or equal - unsigned;	x1 >= x2
 
 # DMem: 
 
-Our test program executes entirely out of the register file and does not require a data memory (DMem). But no CPU is complete without one. The DMem is written to by store instructions and read from by load instructions.
+The Data Memory is written to by store instructions and read from by load instructions.
