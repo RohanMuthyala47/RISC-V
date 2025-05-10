@@ -1,12 +1,21 @@
 # RISC-V-CPU-Design
 Design of a RISC V CPU core, implementing all the necessary components and pipelining
 
+I have started this project by enrolling in the Edx Course:
+## LinuxFoundationX LFD111x -Building a RISC-V CPU Core
+and using the IDE **MakerChip**
+
+The architecture for a RISC-V CPU Core is given below: 
+
 
 ![image](https://github.com/user-attachments/assets/1148e09d-a298-44b4-8dd3-bf0938db1d74)
 
 
 ![image](https://github.com/user-attachments/assets/b700d5be-2947-44e0-b340-f9e5ea1de093)
 
+RISC-V Implements a 5 stage pipeline (Instruction Fetch, Instruction Decode, Execute, Memory Access, Write Back).
+
+The components in/processes of a RISC-V CPU Core include : 
 
 # PC Logic:
 
