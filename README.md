@@ -4,6 +4,7 @@ Design of a RISC V CPU core, implementing all the necessary components and pipel
 I have started this project by enrolling in the Edx Course:
 
 **LinuxFoundationX LFD111x -Building a RISC-V CPU Core**
+
 and using the IDE **MakerChip**
 
 The architecture for a RISC-V CPU Core is given below: 
@@ -41,7 +42,7 @@ Now that we have an instruction to execute, we must interpret, or decode, it. We
 
 ![image](https://github.com/user-attachments/assets/bfda98b0-d586-4352-a7dc-f9096fa9ccb3)
 
-Now we need to determine the specific instruction. This is determined from the **opcode**, **instr[30]**, and **funct3** fields as follows. Note that **instr[30]** is **$funct7[5]** for R-type, or **$imm[10]** for I-type and is labeled "**funct7[5]**" in the table below.:
+We need to determine the specific instruction. This is determined from the **opcode**, **instr[30]**, and **funct3** fields as follows. Note that **instr[30]** is **$funct7[5]** for R-type, or **$imm[10]** for I-type and is labeled "**funct7[5]**" in the table below.:
 
 ![image](https://github.com/user-attachments/assets/ebb41c53-c801-4127-83fa-9bc09fea742f)
 
