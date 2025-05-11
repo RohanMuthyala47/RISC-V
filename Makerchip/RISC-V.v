@@ -72,7 +72,7 @@
    
    //enable signals
    $funct3_valid = $is_r_instr || $is_i_instr || 
-                   $is_b_instr || $is_b_instr;
+                   $is_s_instr || $is_b_instr;
    $rs1_valid =    $is_r_instr || $is_i_instr || 
                    $is_s_instr || $is_b_instr;
    $rs2_valid =    $is_r_instr || $is_s_instr || 
