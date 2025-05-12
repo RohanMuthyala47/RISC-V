@@ -42,10 +42,9 @@ Now that we have an instruction to execute, we must interpret, or decode, it. We
 
 ![image](https://github.com/user-attachments/assets/bfda98b0-d586-4352-a7dc-f9096fa9ccb3)
 
-We need to determine the specific instruction. This is determined from the **opcode**, **instr[30]**, and **funct3** fields as follows. Note that **instr[30]** is **$funct7[5]** for R-type, or **$imm[10]** for I-type and is labeled "**funct7[5]**" in the table below.:
+We need to determine the specific instruction. This is determined from the **opcode**, **instr[30]**, and **funct3** fields as follows:
 
-![image](https://github.com/user-attachments/assets/ebb41c53-c801-4127-83fa-9bc09fea742f)
-
+![image](https://github.com/user-attachments/assets/7df419f0-c835-485b-b4b7-e6fc9d9b23e6)
 
 
 # Register File Read: 
@@ -106,6 +105,7 @@ We will, however, avoid this nuance and implement all load/store instructions to
 The address for loads/stores is computed based on the value from a source register and an offset value (often zero) provided as the immediate.
 
 addr = rs1 + imm
+
 ----------
 Load:
 A load instruction (LW,LH,LB,LHU,LBU) takes the form:
@@ -119,6 +119,7 @@ It uses the I-type instruction format:
 It writes its destination register with a value read from the specified address of memory, which we can denote as:
 
 rd <= DMem[addr] (where, addr = rs1 + imm)
+
 ----------
 Store:
 A store instruction (SW,SH,SB) takes the form:
