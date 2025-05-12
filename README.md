@@ -118,3 +118,17 @@ It uses the I-type instruction format:
 It writes its destination register with a value read from the specified address of memory, which we can denote as:
 
 rd <= DMem[addr] (where, addr = rs1 + imm)
+
+
+A store instruction (SW,SH,SB) takes the form:
+
+STORE rs2, imm(rs1)
+
+It has its own S-type instruction format:
+
+![image](https://github.com/user-attachments/assets/440906a8-d034-431f-9856-b772cd016817)
+
+
+It writes the specified address of memory with a value from the rs2 source register:
+
+DMem[addr] <= rs2 (where, addr = rs1 + imm)
