@@ -44,6 +44,8 @@ Now that we have an instruction to execute, we must interpret, or decode, it. We
 
 We need to determine the specific instruction. This is determined from the **opcode**, **instr[30]**, and **funct3** fields as follows:
 
+![image](https://github.com/user-attachments/assets/d3e50e3b-5bbd-4b37-9715-dcc82ca922ed)
+
 ![image](https://github.com/user-attachments/assets/7df419f0-c835-485b-b4b7-e6fc9d9b23e6)
 
 
