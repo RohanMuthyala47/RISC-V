@@ -107,6 +107,7 @@ The address for loads/stores is computed based on the value from a source regist
 
 addr = rs1 + imm
 
+Load:
 A load instruction (LW,LH,LB,LHU,LBU) takes the form:
 
 LOAD rd, imm(rs1)
@@ -120,6 +121,7 @@ It writes its destination register with a value read from the specified address 
 rd <= DMem[addr] (where, addr = rs1 + imm)
 
 
+Store:
 A store instruction (SW,SH,SB) takes the form:
 
 STORE rs2, imm(rs1)
