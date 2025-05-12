@@ -106,3 +106,15 @@ We will, however, avoid this nuance and implement all load/store instructions to
 The address for loads/stores is computed based on the value from a source register and an offset value (often zero) provided as the immediate.
 
 addr = rs1 + imm
+
+A load instruction (LW,LH,LB,LHU,LBU) takes the form:
+
+LOAD rd, imm(rs1)
+
+It uses the I-type instruction format:
+
+![image](https://github.com/user-attachments/assets/c052533c-e229-44db-b699-d41cc2a3425b)
+
+It writes its destination register with a value read from the specified address of memory, which we can denote as:
+
+rd <= DMem[addr] (where, addr = rs1 + imm)
