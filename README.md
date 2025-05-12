@@ -98,8 +98,7 @@ Jump and link register. Jumps to SRC1 + IMM.
 
 The Data Memory is written to by store instructions and read from by load instructions.
 
-Both load and store instructions require an address from which to read, or to which to write. As with the IMem, this is a byte-address. Loads and stores can read/write single bytes, half-words (2 bytes), or words (4 bytes/32 bits).
-
+Both load and store instructions require an address from which to read, or to which to write. As with the IMem, this is a byte-address. 
 Loads and stores can read/write single bytes, half-words (2 bytes), or words (4 bytes/32 bits).
 
 We will, however, avoid this nuance and implement all load/store instructions to operate on words, assuming that the lowest two address bits are zero. In other words, we are assuming work loads/stores with naturally-aligned addresses.
