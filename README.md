@@ -80,6 +80,18 @@ BLTU -	Branch if less than, unsigned -	x1 < x2
 BGEU -	Branch if greater than or equal - unsigned;	x1 >= x2
 
 
+**Jump Instructions** : 
+The ISA, in addition to conditional branches, also supports jump instructions (which some other ISAs refer to as "unconditional branches"). RISC-V has two forms of jump instructions:
+
+**JAL**
+
+Jump and link. Jumps to PC + IMM (like branches, so this target is $br_tgt_pc, already assigned).
+
+**JALR**
+
+Jump and link register. Jumps to SRC1 + IMM.
+"And link" refers to the fact that these instructions capture their original PC + 4 in a destination register.
+
 
 # DMem: 
 
