@@ -78,32 +78,32 @@ The register file is a small local storage of values the program is actively wor
 Now that we have the register values, it’s time to operate on them. This is the job of the ALU. It will add, subtract, multiply, shift, etc, based on the operation specified in the instruction.
 
 **R-type ALU Instructions : **
-| Instruction | Mnemonic            | Operation                | ALU Function               |      
-| ----------- | ------------------- | ------------------------ | -------------------------- | 
-| `ADD`       | `add rd, rs1, rs2`  | Add                      | `rd = rs1 + rs2`           |      
-| `SUB`       | `sub rd, rs1, rs2`  | Subtract                 | `rd = rs1 - rs2`           |       
-| `SLL`       | `sll rd, rs1, rs2`  | Shift Left Logical       | `rd = rs1 << rs2[4:0]`     |       
-| `SLT`       | `slt rd, rs1, rs2`  | Set Less Than (signed)   | `rd = (rs1 < rs2) ? 1 : 0` |      
-| `SLTU`      | `sltu rd, rs1, rs2` | Set Less Than (unsigned) | `rd = (rs1 < rs2) ? 1 : 0` |      
-| `XOR`       | `xor rd, rs1, rs2`  | Bitwise XOR              | `rd = rs1 ^ rs2`           |       
-| `SRL`       | `srl rd, rs1, rs2`  | Shift Right Logical      | `rd = rs1 >> rs2[4:0]`     |      
-| `SRA`       | `sra rd, rs1, rs2`  | Shift Right Arithmetic   | `rd = rs1 >>> rs2[4:0]`    |       
-| `OR`        | `or rd, rs1, rs2`   | Bitwise OR               | `rd = rs1 | rs2`           |
-| `AND`       | `and rd, rs1, rs2`  | Bitwise AND              | `rd = rs1 & rs2`           |       
+| Instruction | Mnemonic            | Operation                | ALU Function               |
+| ----------- | ------------------- | ------------------------ | -------------------------- |
+| `ADD`       | `add rd, rs1, rs2`  | Add                      | `rd = rs1 + rs2`           |
+| `SUB`       | `sub rd, rs1, rs2`  | Subtract                 | `rd = rs1 - rs2`           |
+| `SLL`       | `sll rd, rs1, rs2`  | Shift Left Logical       | `rd = rs1 << rs2[4:0]`     |
+| `SLT`       | `slt rd, rs1, rs2`  | Set Less Than (signed)   | `rd = (rs1 < rs2) ? 1 : 0` |
+| `SLTU`      | `sltu rd, rs1, rs2` | Set Less Than (unsigned) | `rd = (rs1 < rs2) ? 1 : 0` |
+| `XOR`       | `xor rd, rs1, rs2`  | Bitwise XOR              | `rd = rs1 ^ rs2`           |
+| `SRL`       | `srl rd, rs1, rs2`  | Shift Right Logical      | `rd = rs1 >> rs2[4:0]`     |
+| `SRA`       | `sra rd, rs1, rs2`  | Shift Right Arithmetic   | `rd = rs1 >>> rs2[4:0]`    |
+| `OR`        | `or rd, rs1, rs2`   | Bitwise OR               | `rd = rs1 \| rs2`          |
+| `AND`       | `and rd, rs1, rs2`  | Bitwise AND              | `rd = rs1 & rs2`           |
 
 
 **I-type ALU Instructions : **
-| Instruction | Mnemonic              | Operation                          | ALU Function               |       
-| ----------- | --------------------- | ---------------------------------- | -------------------------- | 
-| `ADDI`      | `addi rd, rs1, imm`   | Add Immediate                      | `rd = rs1 + imm`           |       
-| `SLTI`      | `slti rd, rs1, imm`   | Set Less Than Immediate (signed)   | `rd = (rs1 < imm) ? 1 : 0` |       
-| `SLTIU`     | `sltiu rd, rs1, imm`  | Set Less Than Immediate (unsigned) | `rd = (rs1 < imm) ? 1 : 0` |       
-| `XORI`      | `xori rd, rs1, imm`   | Bitwise XOR Immediate              | `rd = rs1 ^ imm`           |       
-| `ORI`       | `ori rd, rs1, imm`    | Bitwise OR Immediate               | `rd = rs1 | imm`           |
-| `ANDI`      | `andi rd, rs1, imm`   | Bitwise AND Immediate              | `rd = rs1 & imm`           |       
-| `SLLI`      | `slli rd, rs1, shamt` | Shift Left Logical Immediate       | `rd = rs1 << shamt`        |       
-| `SRLI`      | `srli rd, rs1, shamt` | Shift Right Logical Immediate      | `rd = rs1 >> shamt`        |       
-| `SRAI`      | `srai rd, rs1, shamt` | Shift Right Arithmetic Immediate   | `rd = rs1 >>> shamt`       |       
+| Instruction | Mnemonic              | Operation                          | ALU Function               |
+| ----------- | --------------------- | ---------------------------------- | -------------------------- |
+| `ADDI`      | `addi rd, rs1, imm`   | Add Immediate                      | `rd = rs1 + imm`           |
+| `SLTI`      | `slti rd, rs1, imm`   | Set Less Than Immediate (signed)   | `rd = (rs1 < imm) ? 1 : 0` |
+| `SLTIU`     | `sltiu rd, rs1, imm`  | Set Less Than Immediate (unsigned) | `rd = (rs1 < imm) ? 1 : 0` |
+| `XORI`      | `xori rd, rs1, imm`   | Bitwise XOR Immediate              | `rd = rs1 ^ imm`           |
+| `ORI`       | `ori rd, rs1, imm`    | Bitwise OR Immediate               | `rd = rs1 \| imm`          |
+| `ANDI`      | `andi rd, rs1, imm`   | Bitwise AND Immediate              | `rd = rs1 & imm`           |
+| `SLLI`      | `slli rd, rs1, shamt` | Shift Left Logical Immediate       | `rd = rs1 << shamt`        |
+| `SRLI`      | `srli rd, rs1, shamt` | Shift Right Logical Immediate      | `rd = rs1 >> shamt`        |
+| `SRAI`      | `srai rd, rs1, shamt` | Shift Right Arithmetic Immediate   | `rd = rs1 >>> shamt`       |
 
 
 
