@@ -52,7 +52,7 @@ Now that we have an instruction to execute, we must interpret, or decode, it. We
 
 | Instruction Type | Immediate Field Bits                       | Expression Format | Used for                  |
 | ---------------- | ------------------------------------------ | ----------------- | ------------------------- |
-| I-type           | { 21{[31]}, [30:20] }                      |  sign_extend(11)  | Immediate Arithmetic/Load |
+| I-type           | { {21{[31]} }, [30:20] }                   |  sign_extend(11)  | Immediate Arithmetic/Load |
 | S-type           | { {21{[31]} }, [30:25], [11:7] }           |  sign_extend(12)  | Store                     |
 | B-type           | { {20{[31]} }, [7], [30:25], [11:8], 0 }   |  sign_extend(13)  | Branch                    |
 | U-type           | { [31:12], 12'b0 }                         | No sign-extension | Upper Immediate           |
