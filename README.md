@@ -47,6 +47,18 @@ Now that we have an instruction to execute, we must interpret, or decode, it. We
 
 ![image](https://github.com/user-attachments/assets/bfda98b0-d586-4352-a7dc-f9096fa9ccb3)
 
+**Calculation of Immediate Value based on specific instructions :**
+
+
+| Instruction Type | Immediate Field Bits                       | Expression Format | Used for                  |
+| ---------------- | ------------------------------------------ | ----------------- | ------------------------- |
+| I-type           | { 21{[31]}, [30:20] }                      |  sign_extend(11)  | Immediate Arithmetic/Load |
+| S-type           | { {21{[31]} }, [30:25], [11:7] }           |  sign_extend(12)  | Store                     |
+| B-type           | { {20{[31]} }, [7], [30:25], [11:8], 0 }   |  sign_extend(13)  | Branch                    |
+| U-type           | { [31:12], 12'b0 }                         | No sign-extension | Upper Immediate           |
+| J-type           | { {12{[31]} }, [19:12], [20], [30:21], 0 } |  sign_extend(21)  | Jump                      |
+
+
 We need to determine the specific instruction. This is determined from the **opcode**, **instr[30]**, and **funct3** fields as follows:
 
 ![image](https://github.com/user-attachments/assets/d3e50e3b-5bbd-4b37-9715-dcc82ca922ed)
