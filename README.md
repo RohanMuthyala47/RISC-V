@@ -77,7 +77,8 @@ The register file is a small local storage of values the program is actively wor
 
 Now that we have the register values, it’s time to operate on them. This is the job of the ALU. It will add, subtract, multiply, shift, etc, based on the operation specified in the instruction.
 
-**R-type ALU Instructions : **
+**R-type ALU Instructions :**
+
 | Instruction | Mnemonic            | Operation                | ALU Function               |
 | ----------- | ------------------- | ------------------------ | -------------------------- |
 | `ADD`       | `add rd, rs1, rs2`  | Add                      | `rd = rs1 + rs2`           |
@@ -92,7 +93,8 @@ Now that we have the register values, it’s time to operate on them. This is th
 | `AND`       | `and rd, rs1, rs2`  | Bitwise AND              | `rd = rs1 & rs2`           |
 
 
-**I-type ALU Instructions : **
+**I-type ALU Instructions :**
+
 | Instruction | Mnemonic              | Operation                          | ALU Function               |
 | ----------- | --------------------- | ---------------------------------- | -------------------------- |
 | `ADDI`      | `addi rd, rs1, imm`   | Add Immediate                      | `rd = rs1 + imm`           |
