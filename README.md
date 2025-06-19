@@ -18,7 +18,7 @@ The architecture for a RISC-V CPU Core is given below:
 ![image](https://github.com/user-attachments/assets/1148e09d-a298-44b4-8dd3-bf0938db1d74)
 
 
-![image](https://github.com/user-attachments/assets/b700d5be-2947-44e0-b340-f9e5ea1de093)
+![image](https://github.com/user-attachments/assets/e83e5379-076f-4a0b-b7ae-b6c68489d35f)
 
 RISC-V Implements a 5 stage pipeline (Instruction Fetch, Instruction Decode, Execute, Memory Access, Write Back).
 
