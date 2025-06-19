@@ -1,19 +1,13 @@
 # RISC-V-CPU-Design
-Design of a RISC V CPU core, implementing all the necessary components and pipelining
+Design of a RISC V CPU core.
 
-I have started this project by enrolling in the Edx Course:
-
-**LinuxFoundationX LFD111x -Building a RISC-V CPU Core**
-
+References:
 https://learning.edx.org/course/course-v1:LinuxFoundationX+LFD111x+1T2024/home
-
 
 https://github.com/stevehoover/LF-Building-a-RISC-V-CPU-Core
 
-and using the IDE **MakerChip**.
 
-The architecture for a RISC-V CPU Core is given below: 
-
+RISC V CPU Architecture: 
 
 ![image](https://github.com/user-attachments/assets/1148e09d-a298-44b4-8dd3-bf0938db1d74)
 
@@ -28,8 +22,6 @@ The components in/processes of a RISC-V CPU Core include :
 
 This logic is responsible for the program counter (PC). The PC identifies the instruction our CPU will execute next. Most instructions execute sequentially, meaning the default behavior of the PC is to increment to the following instruction each clock cycle. Branch and jump instructions, however, are non-sequential. They specify a target instruction to execute next, and the PC logic must update the PC accordingly.
 
-Initially, we will implement only sequential fetching, so the PC update will be, for now, simply a counter. Note that:
-
 The PC is a byte address, meaning it references the first byte of an instruction in the IMem. Instructions are 4 bytes long, so, although the PC increment is depicted as "+1" (instruction), the actual increment must be by 4 (bytes). The lowest two PC bits must always be zero in normal operation.
 Instruction fetching should start from address zero, so the first **$pc** value with $reset deasserted should be zero, as is implemented in the logic diagram below.
 Unlike our earlier counter circuit, for readability, we use unique names for **$pc** and **$next_pc**, by assigning **$pc** to the previous **$next_pc**.
@@ -41,7 +33,6 @@ The instruction memory (IMem) holds the instructions to execute. To read the IMe
 
 # Decode Logic: 
 
-Now that we have an instruction to execute, we must interpret, or decode, it. We must break it into fields based on its type. These fields would tell us which registers to read, which operation to perform, etc.
 
 ![image](https://github.com/user-attachments/assets/a43ad678-0ebb-42f2-8721-564b1e95f25e)
 
@@ -59,7 +50,7 @@ Now that we have an instruction to execute, we must interpret, or decode, it. We
 | J-type           | `{ {12{[31]} }, [19:12], [20], [30:21], 0 }` |  sign_extend(21)  | Jump                      |
 
 
-We need to determine the specific instruction. This is determined from the **opcode**, **instr[30]**, and **funct3** fields as follows:
+The specific instruction is determined from the **opcode**, **instr[30]**, and **funct3** fields as follows:
 
 ![image](https://github.com/user-attachments/assets/d3e50e3b-5bbd-4b37-9715-dcc82ca922ed)
 
@@ -68,14 +59,13 @@ We need to determine the specific instruction. This is determined from the **opc
 
 # Register File Read: 
 
-The register file is a small local storage of values the program is actively working with. We decoded the instruction to determine which registers we need to operate on. Now, we need to read those registers from the register file.
+The register file is a small local storage of values the program is actively working with. The instruction determines which registers we need to operate on. Those registers are read from the register file.
 
 ![image](https://github.com/user-attachments/assets/c3a88849-c4ff-4733-9aa9-9b1b66c88c12)
 
 
 # Arithmetic Logic Unit (ALU): 
 
-Now that we have the register values, it’s time to operate on them. This is the job of the ALU. It will add, subtract, multiply, shift, etc, based on the operation specified in the instruction.
 
 **R-type ALU Instructions :**
 
