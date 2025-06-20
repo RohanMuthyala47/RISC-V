@@ -13,12 +13,12 @@ module RegisterFile(
     input logic write_enable
     );
     
-    reg [31:0] RegisterFile [0:31];
+    logic [31:0] RegisterFile [0:31];
     integer i;
     
     always @(posedge clk)
     begin
-        if(!rst)
+        if(rst)
         begin
             for(i = 0;i < 32; i = i + 1)
                 RegisterFile[i] <= 'b0;
@@ -31,7 +31,7 @@ module RegisterFile(
     end
     
     always_comb begin
-        read_data1 = RegisterFile[read_address1];
-        read_data2 = RegisterFile[read_address2];
-    end
+        read_data1 = (read_address1 == 0) ? 32'b0 : RegisterFile[read_address1];
+        read_data2 = (read_address2 == 0) ? 32'b0 : RegisterFile[read_address2];
+end
 endmodule
