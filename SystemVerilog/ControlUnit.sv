@@ -3,15 +3,15 @@ module ControlUnit (
     input  logic [2:0]   funct3,
     input  logic [6:0]   funct7,
 
-    output logic          reg_write,
-    output logic          mem_write,
-    output logic          mem_read,
-    output logic          mem_to_reg,
-    output logic          alu_src,
-    output logic          branch,
-    output logic          jump,
-    output logic [4:0] alu_control,
-    output logic [2:0] instr_type
+    output logic         reg_write,
+    output logic         mem_write,
+    output logic         mem_read,
+    output logic         mem_to_reg,
+    output logic         alu_src,
+    output logic         branch,
+    output logic         jump,
+    output logic [4:0]   alu_control,
+    output logic [2:0]   instr_type
 );
 
     always_comb begin
