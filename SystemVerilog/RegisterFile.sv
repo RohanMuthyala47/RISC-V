@@ -9,7 +9,7 @@ module RegisterFile(
     output logic [31:0] read_data2,
     
     input logic [4:0] wr_address,
-    output logic [31:0] data,
+    input logic [31:0] data,
     input logic write_enable
     );
     
@@ -26,7 +26,7 @@ module RegisterFile(
         
         else if(write_enable && wr_address != 0)
         begin
-            data <= RegisterFile[wr_address];
+            RegisterFile[wr_address] <= data;
         end
     end
     
