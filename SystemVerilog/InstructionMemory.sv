@@ -1,4 +1,4 @@
-module Instr_Mem( 
+module InstructionMemory( 
     input logic clk, 
     input logic rst, 
     input logic [31:0] pc, 
@@ -6,7 +6,6 @@ module Instr_Mem(
 ); 
     parameter Memory_Depth = 1024; 
     
-    // Memory array declaration
     (* ram_style = "block" *)
     logic [31:0] instruction_memory[0:Memory_Depth - 1]; 
     
@@ -20,11 +19,11 @@ module Instr_Mem(
     
     always_ff @(posedge clk) begin 
         if (rst) begin
-            instruction <= 32'h00000013; // NOP instruction (addi x0, x0, 0)
+            instruction <= 32'h00000000;
         end else if (word_addr < Memory_Depth) begin
             instruction <= instruction_memory[word_addr]; 
         end else begin
-            instruction <= 32'h00000013;
+            instruction <= 32'h00000000;
         end
     end 
 endmodule
