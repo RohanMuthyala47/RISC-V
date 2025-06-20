@@ -2,6 +2,7 @@
 Design of a RISC V CPU core.
 
 References:
+
 https://learning.edx.org/course/course-v1:LinuxFoundationX+LFD111x+1T2024/home
 
 https://github.com/stevehoover/LF-Building-a-RISC-V-CPU-Core
