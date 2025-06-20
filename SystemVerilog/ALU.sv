@@ -1,14 +1,13 @@
-module alu (
+module ALU (
     input  logic [31:0] op1,
     input  logic [31:0] op2,
-    input  logic [4:0]  alu_control,
+    input  logic [4:0]   alu_control,
     input  logic [31:0] pc,
-
+    
     output logic [31:0] alu_result,
-    output logic        branch_taken,
+    output logic            branch_taken,
     output logic [31:0] jal_trgt_pc,
-    output logic [31:0] jalr_trgt_pc,
-    output logic        zero_flag
+    output logic [31:0] jalr_trgt_pc
 );
 
     always_comb begin
@@ -40,8 +39,8 @@ module alu (
             5'b10000: alu_result = op2 << 12;                                                                     // LUI
             5'b10001: alu_result = pc + (op2 << 12);                                                              // AUIPC
 
-            5'b10010: alu_result = pc + 4;                                                                        // JAL return address
-            5'b10011: alu_result = pc + 4;                                                                        // JALR return address
+            5'b10010: alu_result = pc + 4;                                                                       // JAL return address
+            5'b10011: alu_result = pc + 4;                                                                       // JALR return address
 
             default: begin
                 alu_result   = 32'b0;
@@ -49,8 +48,6 @@ module alu (
             end
         endcase
     end
-
-    assign zero_flag = (alu_result == 0);
     
     assign jal_trgt_pc  = pc + op2;             // JAL
     assign jalr_trgt_pc = (op1 + op2) & ~32'h1; // JALR
