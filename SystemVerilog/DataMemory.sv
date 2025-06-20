@@ -18,14 +18,13 @@ module DataMemory (
     logic [$clog2(Memory_Depth) - 1:0] word_addr;
     assign word_addr = address[$clog2(Memory_Depth) + 1:2];
     
-    // Initialize memory to zero
     initial begin
         for (int i = 0; i < Memory_Depth; i++) begin
             data_memory[i] = 32'h0;
         end
     end
     
-    // Write logic
+
     always_ff @(posedge clk) begin
         if (mem_write && word_addr < Memory_Depth) begin
             case (funct3)
