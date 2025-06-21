@@ -202,7 +202,7 @@
    $jalr_tgt_pc[31:0] = $src1_value + $imm; // jalr
    
    //data memory instantiation
-   //assume loest 2 bits of write/read address to be 0 so we take the next
+   //assume lowest 2 bits of write/read address to be 0 so we take the next
    m4+dmem(32, 32, $reset, $result[6:2], $is_s_instr, $src2_value[31:0], $is_load, $ld_data)
    
    m4+cpu_viz()
