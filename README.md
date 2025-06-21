@@ -10,7 +10,8 @@ https://github.com/stevehoover/LF-Building-a-RISC-V-CPU-Core
 
 RISC V CPU Architecture: 
 
-![image](https://github.com/user-attachments/assets/1148e09d-a298-44b4-8dd3-bf0938db1d74)
+
+![image](https://github.com/user-attachments/assets/06c1fcff-929a-411b-a37b-b8da5fcc02e1)
 
 
 ![image](https://github.com/user-attachments/assets/e83e5379-076f-4a0b-b7ae-b6c68489d35f)
