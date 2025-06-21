@@ -54,8 +54,6 @@ The instruction memory (IMem) holds the instructions to execute. To read the IMe
 
 The specific instruction is determined from the **opcode**, **instr[30]**, and **funct3** fields as follows:
 
-![image](https://github.com/user-attachments/assets/bf5db898-8935-4795-8512-2a0321e15f15)
-
 ![image](https://github.com/user-attachments/assets/7df419f0-c835-485b-b4b7-e6fc9d9b23e6)
 
 
