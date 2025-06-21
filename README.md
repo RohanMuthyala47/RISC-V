@@ -61,7 +61,7 @@ The specific instruction is determined from the **opcode**, **instr[30]**, and *
 
 The register file is a small local storage of values the program is actively working with. The instruction determines which registers we need to operate on. Those registers are read from the register file.
 
-![image](https://github.com/user-attachments/assets/c3a88849-c4ff-4733-9aa9-9b1b66c88c12)
+![image](https://github.com/user-attachments/assets/deac098b-a4a5-419c-8b32-18476a2bf513)
 
 
 # Arithmetic Logic Unit (ALU): 
