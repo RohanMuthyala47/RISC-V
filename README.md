@@ -135,7 +135,7 @@ Jump and link register. Jumps to SRC1 + IMM.
 "And link" refers to the fact that these instructions capture their original PC + 4 in a destination register.
 
 
-# DMem: 
+# Data Memory: 
 
 The Data Memory is written to by store instructions and read from by load instructions.
 
