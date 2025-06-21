@@ -135,6 +135,8 @@ Jump and link register. Jumps to SRC1 + IMM.
 
 # Data Memory: 
 
+![image](https://github.com/user-attachments/assets/182aec24-17d7-4e65-9a20-84cc575fee90)
+
 The Data Memory is written to by store instructions and read from by load instructions.
 
 Both load and store instructions require an address from which to read, or to which to write. As with the IMem, this is a byte-address. 
