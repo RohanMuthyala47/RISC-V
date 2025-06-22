@@ -39,7 +39,6 @@ module CPU (
     logic        branch_taken;
     logic        jal_jump;
     logic        jalr_jump;
-    logic [31:0] branch_target;
     logic [31:0] jal_target;
     logic [31:0] jalr_target;
     
@@ -57,6 +56,9 @@ module CPU (
     assign alu_op2 = ALU_Src ? immediate : read_data2;
 
     assign write_data = MemtoReg ? mem_read_data : alu_result;
+
+    logic [31:0] branch_target;
+    assign branch_target = pc + immediate;
     
     // Program Counter
     ProgramCounter ProgramCounter (
@@ -125,7 +127,6 @@ module CPU (
         .branch_taken(branch_taken),
         .jal_jump(jal_jump),
         .jalr_jump(jalr_jump),
-        .branch_target(branch_target),
         .jal_target(jal_target),
         .jalr_target(jalr_target)
     );
