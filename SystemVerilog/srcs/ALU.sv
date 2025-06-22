@@ -1,7 +1,7 @@
 module ALU (
     input  logic [31:0] op1,
     input  logic [31:0] op2,
-    input  logic [4:0]   alu_control,
+    input  logic [4:0]  alu_control,
     input  logic [31:0] pc,
     
     output logic [31:0] alu_result,
