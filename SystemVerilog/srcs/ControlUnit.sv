@@ -1,14 +1,14 @@
 module ControlUnit (
-    input  logic [6:0]   opcode,
-    input  logic [2:0]   funct3,
-    input  logic [6:0]   funct7,
+    input  logic [6:0] opcode,
+    input  logic [2:0] funct3,
+    input  logic [6:0] funct7,
     
-    output logic          Branch,
-    output logic          MemRead,
-    output logic          MemtoReg,
-    output logic          MemWrite,
-    output logic          ALU_Src,
-    output logic          RegWrite,
+    output logic       Branch,
+    output logic       MemRead,
+    output logic       MemtoReg,
+    output logic       MemWrite,
+    output logic       ALU_Src,
+    output logic       RegWrite,
 
     output logic [4:0] alu_control,
     output logic [2:0] instr_type
@@ -41,7 +41,7 @@ module ControlUnit (
                     10'b0000000_010: alu_control = 5'b01000; // SLT
                     10'b0000000_011: alu_control = 5'b01001; // SLTU
                     
-                    default:                   alu_control = 5'b11111; //Illegal
+                    default:         alu_control = 5'b11111; //Illegal
                 endcase
             end
 
