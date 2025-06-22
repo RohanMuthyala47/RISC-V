@@ -104,7 +104,7 @@ module ControlUnit (
             // JAL
             7'b1101111: begin
                 RegWrite = 1;
-                ALU_Src = 0;
+                ALU_Src = 1;
                 alu_control = 5'b10010; // JAL
                 instr_type = 3'b101;
             end
