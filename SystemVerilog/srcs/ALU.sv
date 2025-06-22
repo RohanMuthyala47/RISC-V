@@ -6,9 +6,9 @@ module ALU (
     
     output logic [31:0] alu_result,
     
-    output logic            branch_taken,
-    output logic            jal_jump,
-    output logic            jalr_jump,
+    output logic        branch_taken,
+    output logic        jal_jump,
+    output logic        jalr_jump,
     
     output logic [31:0] branch_target,
     output logic [31:0] jal_target,
@@ -65,7 +65,7 @@ module ALU (
         endcase
     end
     
-    assign branch_target = pc + op2;            //Branch condition
+    assign branch_target = pc + op2;           //Branch condition
     
     assign jal_target  = pc + op2;             // JAL
     assign jalr_target = (op1 + op2) & ~32'h1; // JALR
