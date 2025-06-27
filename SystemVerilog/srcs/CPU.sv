@@ -5,7 +5,6 @@ module CPU (
 
     // Program Counter signals
     logic [31:0] pc;
-    logic [31:0] next_pc;
     
     // Instruction Memory signals
     logic [31:0] instruction;
