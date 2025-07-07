@@ -44,11 +44,11 @@ interface AXI_interface #(
     // logic [3:0]           ARQOS;      // Quality of Service
     
     //READ DATA CHANNEL
-    logic                          RVALID; // Master read valid signal
-    logic                          RREADY; // Slave ready signal
-    logic [ID_WIDTH - 1:0]         RID;    // Transaction identifier
-    logic [DATA_WIDTH - 1:0]       RDATA;  // Data read bus
-    logic [1:0]                    RRESP;  // Read response channel
-    logic                          RLAST;  // Last transaction
+    logic                    RVALID; // Master read valid signal
+    logic                    RREADY; // Slave ready signal
+    logic [ID_WIDTH - 1:0]   RID;    // Transaction identifier
+    logic [DATA_WIDTH - 1:0] RDATA;  // Data read bus
+    logic [1:0]              RRESP;  // Read response channel
+    logic                    RLAST;  // Last transaction
     
 endinterface
