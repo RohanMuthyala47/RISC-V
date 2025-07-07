@@ -51,4 +51,84 @@ interface AXI_interface #(
     logic [1:0]              RRESP;  // Read response channel
     logic                    RLAST;  // Last transaction
     
+    //-------------------------------------------------------------------------------------------//
+    
+    modport master (
+        input  ACLK,
+        input  ARESETn,
+        
+        input  AWREADY,
+        output AWVALID,
+        output AWID,
+        output AWADDR,
+        output AWLEN,
+        output AWSIZE,
+        output AWBURST,
+        
+        input  WREADY,
+        output WVALID,
+        output WDATA,
+        output WSTRB,
+        output WLAST,
+        
+        input  BVALID,
+        input  BID,
+        input  BRESP,
+        output BREADY,
+        
+        input  ARREADY,
+        output ARVALID,
+        output ARID,
+        output ARADDR,
+        output ARLEN,
+        output ARSIZE,
+        output ARBURST,
+        
+        input  RVALID,
+        input  RID,
+        input  RDATA,
+        input  RRESP,
+        input  RLAST,
+        output RREADY
+    );
+    
+    modport slave (
+        input  ACLK,
+        input  ARESETn,
+        
+        input  AWVALID,
+        input  AWID,
+        input  AWADDR,
+        input  AWLEN,
+        input  AWSIZE,
+        input  AWBURST,
+        output AWREADY,
+        
+        input  WVALID,
+        input  WDATA,
+        input  WSTRB,
+        input  WLAST,
+        output WREADY,
+        
+        input  BREADY,
+        output BVALID,
+        output BID,
+        output BRESP,
+        
+        input  ARVALID,
+        input  ARID,
+        input  ARADDR,
+        input  ARLEN,
+        input  ARSIZE,
+        input  ARBURST,
+        output ARREADY,
+        
+        input  RREADY,
+        output RVALID,
+        output RID,
+        output RDATA,
+        output RRESP,
+        output RLAST
+    );
+
 endinterface
