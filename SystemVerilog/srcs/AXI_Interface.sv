@@ -4,7 +4,7 @@ interface AXI_interface #(
     parameter ID_WIDTH = 4     // ID bus width
 );
 
-    //Interface signals
+    //Global signals
     logic ACLK;
     logic ARESETn;
     
