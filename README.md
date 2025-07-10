@@ -1,4 +1,4 @@
-# RISC-V-CPU-Design
+# RISC-V
 Design of a RISC V CPU core.
 
 References:
