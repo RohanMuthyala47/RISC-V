@@ -1,30 +1,45 @@
-module SignExtender (
-    input  logic [31:0] instruction,
-    input  logic [2:0]  instr_type,
-    output logic [31:0] immediate
+`include "parameters.sv"
+
+module ImmediateSignExtender (
+    input  logic [ADDR_WIDTH - 1:0] instruction,
+    output logic [DATA_WIDTH - 1:0] immediate
 );
 
+    wire [6:0] opcode = instruction[6:0];
+
     always_comb begin
-        case (instr_type)
-            3'b001: // I-type
+        case (opcode)
+            7'b0010011: // I-type Arithmetic
                 immediate = {{20{instruction[31]}}, instruction[31:20]};
                 
-            3'b010: // S-type
+            7'b0000011: // I-type Load
+                immediate = {{20{instruction[31]}}, instruction[31:20]};
+                
+            7'b1100111: // I-type JALR
+                immediate = {{20{instruction[31]}}, instruction[31:20]};
+                
+            7'b1110011: // I-type ECALL and EBREAK
+                immediate = 'b0; // Not required
+                
+            7'b0100011: // S-type
                 immediate = {{20{instruction[31]}}, instruction[31:25], instruction[11:7]};
                 
-            3'b011: // B-type
+            7'b1100011: // B-type
                 immediate = {{19{instruction[31]}}, instruction[31], instruction[7], 
                           instruction[30:25], instruction[11:8], 1'b0};
                 
-            3'b100: // U-type
+            7'b0110111: // U-type LUI
                 immediate = {instruction[31:12], 12'b0};
                 
-            3'b101: // J-type
-                immediate = {{11{instruction[31]}}, instruction[31], instruction[19:12], 
-                          instruction[20], instruction[30:21], 1'b0};
+            7'b0010111: // U-type AUIPC
+                immediate = {instruction[31:12], 12'b0};
                 
+            7'b1101111: // J-type JAL
+                immediate = {{11{instruction[31]}}, instruction[31], instruction[19:12], 
+                             instruction[20], instruction[30:21], 1'b0};
+            
             default: 
-                immediate = 32'b0;
+                immediate = 'b0;
         endcase
     end
 
