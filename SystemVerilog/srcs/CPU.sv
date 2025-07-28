@@ -1,13 +1,15 @@
+`include "parameters.sv"
+
 module CPU (
-    input  logic clk,
-    input  logic rst
+    input logic clk,
+    input logic rst
 );
 
     // Program Counter signals
-    logic [31:0] pc;
+    logic [ADDR_WIDTH - 1:0] pc;
     
     // Instruction Memory signals
-    logic [31:0] instruction;
+    logic [ADDR_WIDTH - 1:0] instruction;
     
     // Control Unit signals
     logic        Branch;
@@ -16,33 +18,13 @@ module CPU (
     logic        MemWrite;
     logic        ALU_Src;
     logic        RegWrite;
-    logic [4:0]  alu_control;
-    logic [2:0]  instr_type;
+    logic [4:0]  ALU_Op;
     
     // Instruction fields
     logic [6:0]  opcode;
     logic [4:0]  rs1, rs2, rd;
     logic [2:0]  funct3;
     logic [6:0]  funct7;
-    
-    // Register File signals
-    logic [31:0] read_data1, read_data2;
-    logic [31:0] write_data;
-    
-    // Sign Extender signals
-    logic [31:0] immediate;
-    
-    // ALU signals
-    logic [31:0] alu_op2;
-    logic [31:0] alu_result;
-    logic        branch_taken;
-    logic        jal_jump;
-    logic        jalr_jump;
-    logic [31:0] jal_target;
-    logic [31:0] jalr_target;
-    
-    // Data Memory signals
-    logic [31:0] mem_read_data;
     
     // Extract instruction fields
     assign opcode = instruction[6:0];
@@ -51,13 +33,30 @@ module CPU (
     assign rs1    = instruction[19:15];
     assign rs2    = instruction[24:20];
     assign funct7 = instruction[31:25];
-
+    
+    // Register File signals
+    logic [DATA_WIDTH - 1:0] read_data1, read_data2;
+    logic [DATA_WIDTH - 1:0] write_data;
+    
+    // Sign Extender signals
+    logic [DATA_WIDTH - 1:0] immediate;
+    
+    // ALU signals
+    logic [DATA_WIDTH - 1:0] alu_op2;
+    logic [DATA_WIDTH - 1:0] alu_result;
+    logic                    branch_taken;
+    logic                    jal_jump;
+    logic                    jalr_jump;
+    logic [ADDR_WIDTH - 1:0] branch_target;
+    logic [ADDR_WIDTH - 1:0] jal_target;
+    logic [ADDR_WIDTH - 1:0] jalr_target;
+    
+    // Data Memory signals
+    logic [DATA_WIDTH - 1:0] mem_read_data;
+    
     assign alu_op2 = ALU_Src ? immediate : read_data2;
 
     assign write_data = MemtoReg ? mem_read_data : alu_result;
-
-    logic [31:0] branch_target;
-    assign branch_target = pc + immediate;
     
     // Program Counter
     ProgramCounter ProgramCounter (
@@ -92,8 +91,7 @@ module CPU (
         .MemWrite(MemWrite),
         .ALU_Src(ALU_Src),
         .RegWrite(RegWrite),
-        .alu_control(alu_control),
-        .instr_type(instr_type)
+        .ALU_Op(ALU_Op)
     );
     
     // Register File
@@ -102,17 +100,16 @@ module CPU (
         .rst(rst),
         .read_address1(rs1),
         .read_address2(rs2),
-        .read_data1(read_data1),
-        .read_data2(read_data2),
-        .wr_address(rd),
+        .write_address(rd),
         .data(write_data),
-        .write_enable(RegWrite)
+        .write_enable(RegWrite),
+        .read_data1(read_data1),
+        .read_data2(read_data2)
     );
     
     // Sign Extender
-    SignExtender SignExtender (
+    ImmediateSignExtender ImmediateSignExtender (
         .instruction(instruction),
-        .instr_type(instr_type),
         .immediate(immediate)
     );
     
@@ -120,12 +117,13 @@ module CPU (
     ALU ALU (
         .op1(read_data1),
         .op2(alu_op2),
-        .alu_control(alu_control),
+        .ALU_Op(ALU_Op),
         .pc(pc),
         .alu_result(alu_result),
         .branch_taken(branch_taken),
         .jal_jump(jal_jump),
         .jalr_jump(jalr_jump),
+        .branch_target(branch_target),
         .jal_target(jal_target),
         .jalr_target(jalr_target)
     );
