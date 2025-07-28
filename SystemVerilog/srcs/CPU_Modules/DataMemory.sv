@@ -1,31 +1,32 @@
+`include "parameters.sv"
+
 module DataMemory (
-    input  logic        clk,
-    input  logic        rst,
-    input  logic        MemRead,
-    input  logic        MemWrite,
-    input  logic [31:0] address,
-    input  logic [31:0] write_data,
-    input  logic [2:0]  funct3,
+    input  logic                    clk,
+    input  logic                    rst,
+    input  logic                    MemRead,
+    input  logic                    MemWrite,
+    input  logic [ADDR_WIDTH - 1:0] address,
+    input  logic [DATA_WIDTH - 1:0] write_data,
+    input  logic [2:0]              funct3,
     
-    output logic [31:0] read_data
+    output logic [DATA_WIDTH - 1:0] read_data
 );
 
-    parameter Memory_Depth = 1024;
 
-    logic [31:0] DataMemory[0:Memory_Depth - 1];
+    logic [DATA_WIDTH - 1:0] DataMemory[0:MEMORY_SIZE - 1];
     
-    logic [$clog2(Memory_Depth) - 1:0] word_addr;
-    assign word_addr = address[$clog2(Memory_Depth) + 1:2];
+    logic [$clog2(MEMORY_SIZE) - 1:0] word_addr;
+    assign word_addr = address[$clog2(MEMORY_SIZE) + 1:2];
     
     initial begin
-        for (int i = 0; i < Memory_Depth; i++) begin
-            DataMemory[i] = 32'h0;
+        for (int i = 0; i < MEMORY_SIZE; i++) begin
+            DataMemory[i] = 'h0;
         end
     end
     
     // Write logic
     always_ff @(posedge clk) begin
-        if (MemWrite && word_addr < Memory_Depth) begin
+        if (MemWrite && word_addr < MEMORY_SIZE) begin
             case (funct3)
                 3'b000: begin // SB (store byte)
                     case (address[1:0])
@@ -43,15 +44,14 @@ module DataMemory (
                 end
                 3'b010: // SW (store word)
                     DataMemory[word_addr] <= write_data;
-                default:
-                    DataMemory[word_addr] <= write_data;
+                default: ;
             endcase
         end
     end
     
     // Read logic
     always_comb begin
-        if (MemRead && word_addr < Memory_Depth) begin
+        if (MemRead && word_addr < MEMORY_SIZE) begin
             case (funct3)
                 3'b000: begin // LB (load byte, sign-extended)
                     case (address[1:0])
@@ -83,11 +83,10 @@ module DataMemory (
                         1'b1: read_data = {16'b0, DataMemory[word_addr][31:16]};
                     endcase
                 end
-                default:
-                    read_data = DataMemory[word_addr];
+                default: ;
             endcase
         end else begin
-            read_data = 32'b0;
+            read_data = 'b0;
         end
     end
     
