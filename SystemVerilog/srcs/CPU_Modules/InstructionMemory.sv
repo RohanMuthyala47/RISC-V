@@ -1,12 +1,13 @@
+`include "parameters.sv"
+
 module InstructionMemory (
-    input  logic        clk,
-    input  logic        rst,
-    input  logic [31:0] pc,
-    output logic [31:0] instruction
+    input  logic                    clk,
+    input  logic                    rst,
+    input  logic [ADDR_WIDTH - 1:0] pc,
+    output logic [ADDR_WIDTH - 1:0] instruction
 );
 
-    localparam MemoryDepth = 1024;
-    logic [31:0] InstructionMemory [0 : MemoryDepth - 1];
+    logic [ADDR_WIDTH - 1:0] InstructionMemory [0 : MEMORY_SIZE - 1];
 
     initial begin
         $readmemh("program.hex", InstructionMemory);
@@ -16,7 +17,7 @@ module InstructionMemory (
         if (rst)
             instruction <= 32'd0;
         else
-            instruction <= InstructionMemory[pc[31:2]];
+            instruction <= InstructionMemory[pc[ADDR_WIDTH - 1:2]];
     end
 
 endmodule
