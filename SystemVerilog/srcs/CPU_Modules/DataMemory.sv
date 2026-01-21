@@ -1,4 +1,4 @@
-`include "parameters.sv"
+`include "parameters.vh"
 
 module DataMemory (
     input  logic                    clk,
@@ -13,7 +13,7 @@ module DataMemory (
 );
 
 
-    logic [DATA_WIDTH - 1:0] DataMemory[0:MEMORY_SIZE - 1];
+    logic [DATA_WIDTH - 1:0] DataMemory [0:MEMORY_SIZE - 1];
     
     logic [$clog2(MEMORY_SIZE) - 1:0] word_addr;
     assign word_addr = address[$clog2(MEMORY_SIZE) + 1:2];
