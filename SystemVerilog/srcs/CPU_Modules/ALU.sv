@@ -1,4 +1,4 @@
-`include "parameters.sv"
+`include "parameters.vh"
 
 module ALU (
     input  logic [DATA_WIDTH - 1:0] op1,
@@ -44,8 +44,8 @@ module ALU (
             ALU_BLTU:  branch_taken = (op1 < op2);
             ALU_BGEU:  branch_taken = (op1 >= op2);
 
-            ALU_LUI:   alu_result = op2 << 12;
-            ALU_AUIPC: alu_result = pc + (op2 << 12);
+            ALU_LUI:   alu_result = op2;
+            ALU_AUIPC: alu_result = pc + op2;
 
             ALU_JAL: begin
                 alu_result = pc + 4;
