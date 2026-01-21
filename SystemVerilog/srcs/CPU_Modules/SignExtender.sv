@@ -1,4 +1,4 @@
-`include "parameters.sv"
+`include "parameters.vh"
 
 module ImmediateSignExtender (
     input  logic [ADDR_WIDTH - 1:0] instruction,
@@ -26,7 +26,7 @@ module ImmediateSignExtender (
                 
             7'b1100011: // B-type
                 immediate = {{19{instruction[31]}}, instruction[31], instruction[7], 
-                          instruction[30:25], instruction[11:8], 1'b0};
+                              instruction[30:25], instruction[11:8], 1'b0};
                 
             7'b0110111: // U-type LUI
                 immediate = {instruction[31:12], 12'b0};
@@ -36,7 +36,7 @@ module ImmediateSignExtender (
                 
             7'b1101111: // J-type JAL
                 immediate = {{11{instruction[31]}}, instruction[31], instruction[19:12], 
-                             instruction[20], instruction[30:21], 1'b0};
+                              instruction[20], instruction[30:21], 1'b0};
             
             default: 
                 immediate = 'b0;
