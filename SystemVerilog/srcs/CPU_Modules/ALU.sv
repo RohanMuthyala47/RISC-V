@@ -17,44 +17,44 @@ module ALU (
 );
 
     always_comb begin
-        alu_result = 'b0;
+        alu_result   =  'b0;
         branch_taken = 1'b0;
-        jal_jump = 1'b0;
-        jalr_jump = 1'b0;
+        jal_jump     = 1'b0;
+        jalr_jump    = 1'b0;
 
         case (ALU_Op)
-            ALU_ADD:   alu_result = op1 + op2;
-            ALU_SUB:   alu_result = op1 - op2;
+            ALU_ADD  :  alu_result   = op1 + op2;
+            ALU_SUB  :  alu_result   = op1 - op2;
 
-            ALU_XOR:   alu_result = op1 ^ op2;
-            ALU_OR:    alu_result = op1 | op2;
-            ALU_AND:   alu_result = op1 & op2;
+            ALU_XOR  :  alu_result   = op1 ^ op2;
+            ALU_OR   :  alu_result   = op1 | op2;
+            ALU_AND  :  alu_result   = op1 & op2;
 
-            ALU_SLL:   alu_result = op1 << op2[4:0];
-            ALU_SRL:   alu_result = op1 >> op2[4:0];
-            ALU_SRA:   alu_result = $signed(op1) >>> op2[4:0];
+            ALU_SLL  :  alu_result   = op1 << op2[4:0];
+            ALU_SRL  :  alu_result   = op1 >> op2[4:0];
+            ALU_SRA  :  alu_result   = $signed(op1) >>> op2[4:0];
 
-            ALU_SLT:   alu_result = ($signed(op1) < $signed(op2)) ? 32'd1 : 32'd0;
-            ALU_SLTU:  alu_result = (op1 < op2) ? 32'd1 : 32'd0;
+            ALU_SLT  :  alu_result   = ($signed(op1) < $signed(op2)) ? 32'd1 : 32'd0;
+            ALU_SLTU :  alu_result   = (op1 < op2) ? 32'd1 : 32'd0;
 
-            ALU_BEQ:   branch_taken = (op1 == op2);
-            ALU_BNE:   branch_taken = (op1 != op2);
-            ALU_BLT:   branch_taken = ($signed(op1) < $signed(op2));
-            ALU_BGE:   branch_taken = ($signed(op1) >= $signed(op2));
-            ALU_BLTU:  branch_taken = (op1 < op2);
-            ALU_BGEU:  branch_taken = (op1 >= op2);
+            ALU_BEQ  :  branch_taken = (op1 == op2);
+            ALU_BNE  :  branch_taken = (op1 != op2);
+            ALU_BLT  :  branch_taken = ($signed(op1) < $signed(op2));
+            ALU_BGE  :  branch_taken = ($signed(op1) >= $signed(op2));
+            ALU_BLTU :  branch_taken = (op1 < op2);
+            ALU_BGEU :  branch_taken = (op1 >= op2);
 
-            ALU_LUI:   alu_result = op2;
-            ALU_AUIPC: alu_result = pc + op2;
+            ALU_LUI  :  alu_result   = op2;
+            ALU_AUIPC:  alu_result   = pc + op2;
 
             ALU_JAL: begin
                 alu_result = pc + 4;
-                jal_jump = 1'b1;
+                jal_jump   = 1'b1;
             end
 
             ALU_JALR: begin
                 alu_result = pc + 4;
-                jalr_jump = 1'b1;
+                jalr_jump  = 1'b1;
             end
 
             default: begin
