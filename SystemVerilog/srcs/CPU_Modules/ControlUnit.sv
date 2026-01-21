@@ -1,4 +1,4 @@
-`include "parameters.sv"
+`include "parameters.vh"
 
 module ControlUnit (
     input  logic [6:0] opcode,
@@ -16,13 +16,13 @@ module ControlUnit (
 );
 
     always_comb begin
-        Branch = 0;
-        MemRead = 0;
+        Branch   = 0;
+        MemRead  = 0;
         MemtoReg = 0;
         MemWrite = 0;
-        ALU_Src = 0;
+        ALU_Src  = 0;
         RegWrite = 0;
-        ALU_Op = ALU_DEF;
+        ALU_Op   = ALU_DEF;
 
         case (opcode)
             // R-type
@@ -63,22 +63,22 @@ module ControlUnit (
             // Load (I-type)
             7'b0000011: begin
                 RegWrite = 1;
-                MemRead = 1;
+                MemRead  = 1;
                 MemtoReg = 1;
-                ALU_Src = 1;
-                ALU_Op = ALU_ADD;
+                ALU_Src  = 1;
+                ALU_Op   = ALU_ADD;
             end
 
             // Store (S-type)
             7'b0100011: begin
                 MemWrite = 1;
-                ALU_Src = 1;
-                ALU_Op = ALU_ADD;
+                ALU_Src  = 1;
+                ALU_Op   = ALU_ADD;
             end
 
             // Branch (B-type)
             7'b1100011: begin
-                Branch = 1;
+                Branch  = 1;
                 ALU_Src = 0;
                 case (funct3)
                     3'b000:  ALU_Op = ALU_BEQ;
@@ -94,29 +94,29 @@ module ControlUnit (
             // JAL
             7'b1101111: begin
                 RegWrite = 1;
-                ALU_Src = 0;
-                ALU_Op = ALU_JAL;
+                ALU_Src  = 0;
+                ALU_Op   = ALU_JAL;
             end
 
             // JALR
             7'b1100111: begin
                 RegWrite = 1;
-                ALU_Src = 1;
-                ALU_Op = ALU_JALR;
+                ALU_Src  = 1;
+                ALU_Op   = ALU_JALR;
             end
 
             // AUIPC (U-type)
             7'b0010111: begin
                 RegWrite = 1;
-                ALU_Src = 1;
-                ALU_Op = ALU_AUIPC;
+                ALU_Src  = 1;
+                ALU_Op   = ALU_AUIPC;
             end
 
             // LUI (U-type)
             7'b0110111: begin
                 RegWrite = 1;
-                ALU_Src = 1;
-                ALU_Op = ALU_LUI;
+                ALU_Src  = 1;
+                ALU_Op   = ALU_LUI;
             end
 
             default: begin
