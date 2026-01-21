@@ -1,6 +1,6 @@
-// parameters.sv
-`ifndef PARAMETERS_SV
-`define PARAMETERS_SV
+// parameters.vh
+`ifndef PARAMETERS_VH
+`define PARAMETERS_VH
 
 parameter DATA_WIDTH = 32;
 parameter ADDR_WIDTH = 32;
@@ -42,3 +42,4 @@ parameter ALU_JALR  = 5'b10011;
 parameter ALU_DEF   = 5'b11111;
 
 `endif
+
