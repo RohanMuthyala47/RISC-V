@@ -1,4 +1,4 @@
-`include "parameters.sv"
+`include "parameters.vh"
 
 module InstructionMemory (
     input  logic                    clk,
