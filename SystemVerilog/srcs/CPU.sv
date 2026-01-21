@@ -1,4 +1,4 @@
-`include "parameters.sv"
+`include "parameters.vh"
 
 module CPU (
     input logic clk,
