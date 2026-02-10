@@ -9,10 +9,9 @@ module CPU (
     logic [ADDR_WIDTH - 1:0] pc;
     
     // Instruction Memory signals
-    logic [ADDR_WIDTH - 1:0] instruction;
+    logic [31:0] instruction;
     
     // Control Unit signals
-    logic        Branch;
     logic        MemRead;
     logic        MemtoReg;
     logic        MemWrite;
@@ -56,14 +55,14 @@ module CPU (
     
     assign alu_op2 = ALU_Src ? immediate : read_data2;
 
-    assign write_data = MemtoReg ? mem_read_data : alu_result;
+    assign write_data = (jal_jump | jalr_jump) ? (pc + 4) :
+            MemtoReg ? mem_read_data : alu_result;
     
     // Program Counter
     ProgramCounter ProgramCounter (
         .clk(clk),
         .rst(rst),
         .branch_taken(branch_taken),
-        .branch(Branch),
         .branch_target(branch_target),
         .is_jal(jal_jump),
         .is_jalr(jalr_jump),
@@ -85,7 +84,6 @@ module CPU (
         .opcode(opcode),
         .funct3(funct3),
         .funct7(funct7),
-        .Branch(Branch),
         .MemRead(MemRead),
         .MemtoReg(MemtoReg),
         .MemWrite(MemWrite),
