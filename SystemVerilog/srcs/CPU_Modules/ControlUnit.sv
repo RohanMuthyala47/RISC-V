@@ -4,8 +4,7 @@ module ControlUnit (
     input  logic [6:0] opcode,
     input  logic [2:0] funct3,
     input  logic [6:0] funct7,
-    
-    output logic       Branch,
+
     output logic       MemRead,
     output logic       MemtoReg,
     output logic       MemWrite,
@@ -16,7 +15,6 @@ module ControlUnit (
 );
 
     always_comb begin
-        Branch   = 0;
         MemRead  = 0;
         MemtoReg = 0;
         MemWrite = 0;
@@ -78,8 +76,7 @@ module ControlUnit (
 
             // Branch (B-type)
             7'b1100011: begin
-                Branch  = 1;
-                ALU_Src = 0;
+                ALU_Src = 1;
                 case (funct3)
                     3'b000:  ALU_Op = ALU_BEQ;
                     3'b001:  ALU_Op = ALU_BNE;
@@ -94,7 +91,7 @@ module ControlUnit (
             // JAL
             7'b1101111: begin
                 RegWrite = 1;
-                ALU_Src  = 0;
+                ALU_Src  = 1;
                 ALU_Op   = ALU_JAL;
             end
 
