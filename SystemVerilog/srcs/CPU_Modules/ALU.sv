@@ -17,7 +17,7 @@ module ALU (
 );
 
     always_comb begin
-        alu_result   =  'b0;
+        alu_result   =  32'b0;
         branch_taken = 1'b0;
         jal_jump     = 1'b0;
         jalr_jump    = 1'b0;
@@ -56,7 +56,14 @@ module ALU (
                 alu_result = pc + 4;
                 jalr_jump  = 1'b1;
             end
-
+            
+            ALU_DEF: begin
+                alu_result   = 'b0;
+                branch_taken = 1'b0;
+                jal_jump     = 1'b0;
+                jalr_jump    = 1'b0;
+            end
+            
             default: begin
                 alu_result   = 'b0;
                 branch_taken = 1'b0;
@@ -68,6 +75,6 @@ module ALU (
 
     assign branch_target = pc + op2;
     assign jal_target    = pc + op2;
-    assign jalr_target   = (op1 + op2) & ~'h1;
+    assign jalr_target   = op1 + op2;
 
 endmodule
