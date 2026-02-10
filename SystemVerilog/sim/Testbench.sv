@@ -4,7 +4,7 @@ module CPU_TestBench;
     reg clk;
     reg rst;
 
-    CPU CPU(clk, rst);
+    CPU dut(clk, rst);
 
     always #5 clk = ~clk;
 
@@ -15,6 +15,8 @@ module CPU_TestBench;
         rst = 1;
         #20;
         rst = 0;
+        
+        
 
         repeat (200) @(posedge clk);
         
@@ -52,6 +54,17 @@ module CPU_TestBench;
         $display("x31 = %0d", CPU.RegisterFile.RegisterFile[31]);
 
         $finish;
+    end
+    
+    reg [31:0] last_pc;
+
+    initial last_pc = 32'hFFFFFFFF;
+
+    always @(posedge clk) begin
+        if (!rst && CPU.pc !== last_pc) begin
+            $display("Time %0t | PC = 0x%08h (%0d) | INSTR=0x%08h", $time, CPU.pc, CPU.pc, CPU.instruction);
+            last_pc <= CPU.pc;
+        end
     end
 
 endmodule
