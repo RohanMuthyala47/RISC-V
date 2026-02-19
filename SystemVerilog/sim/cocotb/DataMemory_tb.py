@@ -1,4 +1,3 @@
-#DataMemory_tb.py
 import cocotb
 from cocotb.clock import Clock
 from cocotb.triggers import RisingEdge, Timer
@@ -27,7 +26,7 @@ async def data_memory_test(dut):
     for addr in range(0, 16, 4):
         dut.address.value = addr
         await Timer(1, unit="ns")
-        assert dut.read_data.value.integer == 0
+        assert dut.read_data.value.to_unsigned() == 0
 
     # Test writes
     test_vector = [
@@ -53,6 +52,8 @@ async def data_memory_test(dut):
     for addr, expected in test_vector:
         dut.address.value = addr
         await Timer(1, unit="ns")
-        assert dut.read_data.value.integer == expected, \
-            f"Read {hex(dut.read_data.value.integer)} expected {hex(expected)}"
+        read_val = dut.read_data.value.to_unsigned()
+        assert read_val == expected, \
+            f"Read {hex(read_val)} expected {hex(expected)}"
 
+        print(f"Read {hex(read_val)} expected {hex(expected)}")
