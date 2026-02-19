@@ -68,9 +68,9 @@ async def regfile_test(dut):
     dut.write_enable.value = 0
     ref_regfile[write_addr] = 0
 
-    await TImer(1, unit="ns")
+    await Timer(1, unit="ns")
     dut.read_address1.value = 0
-    await TImer(1, unit="ns")
+    await Timer(1, unit="ns")
     print(dut.read_data1.value)
     assert int(dut.read_data1.value) == 0
 
