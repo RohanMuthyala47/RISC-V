@@ -51,7 +51,7 @@ async def regfile_test(dut):
         assert dut.read_data1.value == ref_regfile[read_addr1]
         assert dut.read_data2.value == ref_regfile[read_addr2]
 
-        #write
+        # write
         dut.write_address = write_addr
         dut.write_enable = 1
         dut.data.value = data
