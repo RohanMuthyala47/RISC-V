@@ -15,8 +15,6 @@ module CPU_TestBench;
         rst = 1;
         #20;
         rst = 0;
-        
-        
 
         repeat (200) @(posedge clk);
         
