@@ -1,19 +1,19 @@
 # Makefile
 
 # defaults
-SIM ?= icarus
+SIM ?= verilator
 TOPLEVEL_LANG ?= verilog
 
-VERILOG_SOURCES += /path/to/verilog/source
-# use VHDL_SOURCES for VHDL files
+DUT?=ControlUnit
 
-# COCOTB_TOPLEVEL is the name of the toplevel module in your Verilog/VHDL/SV file
-COCOTB_TOPLEVEL = /path/to/verilog/top/module
+VERILOG_SOURCES += /home/rohan/risc_v/rtl/$(DUT).sv
 
-# COCOTB_TEST_MODULES is the basename of the Python test file(s)
-COCOTB_TEST_MODULES = path/to/testfile
+VERILOG_INCLUDE_DIRS = /home/rohan/risc_v/rtl/
 
-IVERILOG_COMPILE_ARGS = -g2012 -I../rtl
+COCOTB_TOPLEVEL = $(DUT)
 
-# include cocotb's make rules to take care of the simulator setup
+COCOTB_TEST_MODULES = $(DUT)_tb
+
+# IVERILOG_COMPILE_ARGS = -g2012 -I../rtl
+
 include $(shell cocotb-config --makefiles)/Makefile.sim
