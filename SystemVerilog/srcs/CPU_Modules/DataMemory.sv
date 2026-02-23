@@ -1,19 +1,19 @@
 `include "parameters.vh"
 
 module DataMemory (
-    input  logic                    clk,
-    input  logic                    rst,
-    input  logic                    MemRead,
-    input  logic                    MemWrite,
+    input  logic        clk,
+    input  logic        rst,
+    input  logic        MemRead,
+    input  logic        MemWrite,
     input  logic [ADDR_WIDTH - 1:0] address,
     input  logic [DATA_WIDTH - 1:0] write_data,
-    input  logic [2:0]              funct3,
+    input  logic [2:0]  funct3,
     
     output logic [DATA_WIDTH - 1:0] read_data
 );
 
 
-    logic [DATA_WIDTH - 1:0] DataMemory [0:MEMORY_SIZE - 1];
+    logic [DATA_WIDTH - 1:0] DataMemory[0:MEMORY_SIZE - 1];
     
     logic [$clog2(MEMORY_SIZE) - 1:0] word_addr;
     assign word_addr = address[$clog2(MEMORY_SIZE) + 1:2];
@@ -51,6 +51,7 @@ module DataMemory (
     
     // Read logic
     always_comb begin
+    read_data = 'b0;
         if (MemRead && word_addr < MEMORY_SIZE) begin
             case (funct3)
                 3'b000: begin // LB (load byte, sign-extended)
