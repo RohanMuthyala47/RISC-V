@@ -12,7 +12,7 @@ module InstructionMemory (
     end
 
     always_comb begin
-            instruction <= InstructionMemory[pc[ADDR_WIDTH - 1:2]];
+            instruction = InstructionMemory[pc[ADDR_WIDTH - 1:2]];
     end
 
 endmodule
