@@ -37,14 +37,17 @@ module DataMemory (
                         2'b11: DataMemory[word_addr][31:24] <= write_data[7:0];
                     endcase
                 end
+                
                 3'b001: begin // SH (store halfword)
                     case (address[1])
                         1'b0: DataMemory[word_addr][15:0]  <= write_data[15:0];
                         1'b1: DataMemory[word_addr][31:16] <= write_data[15:0];
                     endcase
                 end
+                
                 3'b010: // SW (store word)
                     DataMemory[word_addr] <= write_data;
+                
                 default: ;
             endcase
         end
@@ -63,14 +66,17 @@ module DataMemory (
                         2'b11: read_data = {{24{DataMemory[word_addr][31]}}, DataMemory[word_addr][31:24]};
                     endcase
                 end
+                
                 3'b001: begin // LH (load halfword, sign-extended)
                     case (address[1])
                         1'b0: read_data = {{16{DataMemory[word_addr][15]}}, DataMemory[word_addr][15:0]};
                         1'b1: read_data = {{16{DataMemory[word_addr][31]}}, DataMemory[word_addr][31:16]};
                     endcase
                 end
+                
                 3'b010: // LW (load word)
                     read_data = DataMemory[word_addr];
+                
                 3'b100: begin // LBU (load byte unsigned)
                     case (address[1:0])
                         2'b00: read_data = {24'b0, DataMemory[word_addr][7:0]};
@@ -79,14 +85,17 @@ module DataMemory (
                         2'b11: read_data = {24'b0, DataMemory[word_addr][31:24]};
                     endcase
                 end
+                
                 3'b101: begin // LHU (load halfword unsigned)
                     case (address[1])
                         1'b0: read_data = {16'b0, DataMemory[word_addr][15:0]};
                         1'b1: read_data = {16'b0, DataMemory[word_addr][31:16]};
                     endcase
                 end
+                
                 default: ;
             endcase
+            
         end else begin
             read_data = 'b0;
         end
