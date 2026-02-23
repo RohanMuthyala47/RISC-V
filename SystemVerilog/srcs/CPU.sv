@@ -9,7 +9,7 @@ module CPU (
     logic [ADDR_WIDTH - 1:0] pc;
     
     // Instruction Memory signals
-    logic [31:0] instruction;
+    logic [ADDR_WIDTH - 1:0] instruction;
     
     // Control Unit signals
     logic        MemRead;
@@ -73,8 +73,6 @@ module CPU (
     
     // Instruction Memory
     InstructionMemory InstructionMemory (
-        .clk(clk),
-        .rst(rst),
         .pc(pc),
         .instruction(instruction)
     );
