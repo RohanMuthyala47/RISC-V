@@ -4,11 +4,9 @@ module ALU (
     input  logic [DATA_WIDTH - 1:0] op1,
     input  logic [DATA_WIDTH - 1:0] op2,
     input  logic [4:0]              ALU_Op,
-    
     input  logic [ADDR_WIDTH - 1:0] pc,
 
     output logic [DATA_WIDTH - 1:0] alu_result,
-    
     output logic                    branch_taken,
     output logic                    jal_jump,
     output logic                    jalr_jump,
