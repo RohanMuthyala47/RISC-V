@@ -5,6 +5,8 @@ module InstructionMemory (
     output logic [31:0] instruction
 );
 
+    /* verilator lint_off WIDTHTRUNC */
+
     logic [31:0] InstructionMemory [0 : MEMORY_SIZE - 1];
 
     initial begin
@@ -12,7 +14,7 @@ module InstructionMemory (
     end
 
     always_comb begin
-            instruction = InstructionMemory[pc[ADDR_WIDTH - 1:2]];
+        instruction = InstructionMemory[pc[ADDR_WIDTH - 1:2]];
     end
 
 endmodule
