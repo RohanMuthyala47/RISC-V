@@ -15,7 +15,7 @@ module ProgramCounter (
     output logic [ADDR_WIDTH - 1:0] pc
 );
 
-    logic [ADDR_WIDTH - 1:0] next_pc;
+    logic [31:0] next_pc;
     
     // Set program counter to branch target if branch instruction,
     // jump target if jump instruction,
