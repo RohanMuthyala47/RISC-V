@@ -4,12 +4,14 @@
 SIM ?= verilator
 TOPLEVEL_LANG ?= verilog
 
-# DUT = ProgramCounter, InstructionMemory, RegisterFile, ControlUnit, ImmediateSignExtender, DataMemory
-DUT ?= NameofTopMOdule
+# DUT=CPU, ProgramCounter, InstructionMemory, RegisterFile, ControlUnit, ImmediateSignExtender, DataMemory
 
-VERILOG_SOURCES += path/to/rtl/srcs
+DUT?=CPU
 
-VERILOG_INCLUDE_DIRS = path/to/includefile
+#VERILOG_SOURCES += /path/to/rtl/$(DUT).sv
+VERILOG_SOURCES += $(wildcard /path/to/rtl/*.sv)
+
+VERILOG_INCLUDE_DIRS = /path/to/includes/
 
 COCOTB_TOPLEVEL = $(DUT)
 
