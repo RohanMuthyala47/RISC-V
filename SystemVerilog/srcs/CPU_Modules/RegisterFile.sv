@@ -1,6 +1,6 @@
 `include "parameters.vh"
 
-module RegisterFile (
+module RegisterFile(
     input logic clk,
     input logic rst,
     
@@ -23,7 +23,7 @@ module RegisterFile (
         if(rst)
         begin
             for(i = 0;i < REGISTER_FILE_SIZE; i = i + 1)
-                RegisterFile[i] <= 32'b0;
+                RegisterFile[i] <= 'b0;
         end
         
         else if(write_enable && write_address != 0)
