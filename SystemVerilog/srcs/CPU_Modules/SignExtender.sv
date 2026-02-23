@@ -1,7 +1,7 @@
 `include "parameters.vh"
 
 module ImmediateSignExtender (
-    input  logic [31:0] instruction,
+    input  logic [ADDR_WIDTH - 1:0] instruction,
     output logic [DATA_WIDTH - 1:0] immediate
 );
 
@@ -19,7 +19,7 @@ module ImmediateSignExtender (
                 immediate = {{20{instruction[31]}}, instruction[31:20]};
                 
             7'b1110011: // I-type ECALL and EBREAK
-                immediate = 'b0;
+                immediate = 'b0; // Not required
                 
             7'b0100011: // S-type
                 immediate = {{21{instruction[31]}}, instruction[30:25], instruction[11:7]};
