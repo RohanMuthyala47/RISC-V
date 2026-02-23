@@ -12,6 +12,7 @@ module DataMemory (
     output logic [DATA_WIDTH - 1:0] read_data
 );
 
+    /* verilator lint_off WIDTHEXPAND */
 
     logic [DATA_WIDTH - 1:0] DataMemory[0:MEMORY_SIZE - 1];
     
