@@ -4,11 +4,11 @@ interface AXI_interface #(
     parameter ID_WIDTH = 4     // ID bus width
 );
 
-    //Global signals
+    // Global signals
     logic ACLK;
     logic ARESETn;
     
-    //WRITE REQUEST CHANNEL
+    // WRITE REQUEST CHANNEL
     logic                          AWVALID; // Master address valid signal
     logic                          AWREADY; // Slave ready signal
     logic [ID_WIDTH - 1:0]         AWID;    // Transaction identifier
@@ -19,20 +19,20 @@ interface AXI_interface #(
     // logic                       AWLOCK;     // Exclusive access indicator
     // logic [3:0]                 AWQOS;      // Quality of Service
     
-    //WRITE DATA CHANNEL
+    // WRITE DATA CHANNEL
     logic                          WVALID; // Master write valid signal
     logic                          WREADY; // Slave ready signal
     logic [DATA_WIDTH - 1:0]       WDATA;  // Data write bus
     logic [(DATA_WIDTH / 8) - 1:0] WSTRB;  // Write strobe signal (Bytes valid)
     logic                          WLAST;  // Last transaction
     
-    //WRITE RESPONSE CHANNEL
+    // WRITE RESPONSE CHANNEL
     logic                          BVALID; // Master response valid signal
     logic                          BREADY; // Slave ready signal
     logic [ID_WIDTH - 1:0]         BID;    // Transaction identifier
     logic [1:0]                    BRESP;  // Write response channel
     
-    //READ REQUEST CHANNEL
+    // READ ADDRESS CHANNEL
     logic                          ARVALID; // Master address valid signal
     logic                          ARREADY; // Slave ready signal
     logic [ID_WIDTH - 1:0]         ARID;    // Transaction identifier
@@ -43,7 +43,7 @@ interface AXI_interface #(
     // logic                       ARLOCK;     // Exclusive access indicator
     // logic [3:0]                 ARQOS;      // Quality of Service
     
-    //READ DATA CHANNEL
+    // READ DATA CHANNEL
     logic                          RVALID; // Master read valid signal
     logic                          RREADY; // Slave ready signal
     logic [ID_WIDTH - 1:0]         RID;    // Transaction identifier
@@ -132,3 +132,4 @@ interface AXI_interface #(
     );
 
 endinterface
+
