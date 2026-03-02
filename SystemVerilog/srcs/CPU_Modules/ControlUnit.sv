@@ -1,30 +1,29 @@
+import cpu_pkg::*;
 `include "parameters.vh"
 
 module ControlUnit (
-    input  logic [6:0] opcode,
+    input  opcode_t    opcode,
     input  logic [2:0] funct3,
     input  logic [6:0] funct7,
 
     output logic       MemRead,
     output logic       MemtoReg,
     output logic       MemWrite,
-    output logic       ALU_Src,
     output logic       RegWrite,
 
-    output logic [4:0] ALU_Op
+    output alu_op_t    ALU_Op
 );
 
     always_comb begin
         MemRead  = 0;
         MemtoReg = 0;
         MemWrite = 0;
-        ALU_Src  = 0;
         RegWrite = 0;
         ALU_Op   = ALU_DEF;
 
         case (opcode)
             // R-type
-            7'b0110011: begin
+            R_TYPE: begin
                 RegWrite = 1;
                 case ({funct7, funct3})
                     10'b0000000_000: ALU_Op = ALU_ADD;
@@ -42,41 +41,37 @@ module ControlUnit (
             end
 
             // I-type (Immediate)
-            7'b0010011: begin
+            I_TYPE: begin
                 RegWrite = 1;
-                ALU_Src = 1;
                 case (funct3)
-                    3'b000:  ALU_Op = ALU_ADD;
-                    3'b100:  ALU_Op = ALU_XOR;
-                    3'b110:  ALU_Op = ALU_OR;
-                    3'b111:  ALU_Op = ALU_AND;
-                    3'b001:  ALU_Op = ALU_SLL;
-                    3'b101:  ALU_Op = (funct7 == 7'b0000000) ? ALU_SRL : ALU_SRA;
-                    3'b010:  ALU_Op = ALU_SLT;
-                    3'b011:  ALU_Op = ALU_SLTU;
+                    3'b000:  ALU_Op = ALU_ADDI;
+                    3'b100:  ALU_Op = ALU_XORI;
+                    3'b110:  ALU_Op = ALU_ORI;
+                    3'b111:  ALU_Op = ALU_ANDI;
+                    3'b001:  ALU_Op = ALU_SLLI;
+                    3'b101:  ALU_Op = (funct7 == 7'b0000000) ? ALU_SRLI : ALU_SRAI;
+                    3'b010:  ALU_Op = ALU_SLTI;
+                    3'b011:  ALU_Op = ALU_SLTIU;
                     default: ALU_Op = ALU_DEF;
                 endcase
             end
 
             // Load (I-type)
-            7'b0000011: begin
+            I_TYPE_LOAD: begin
                 RegWrite = 1;
                 MemRead  = 1;
                 MemtoReg = 1;
-                ALU_Src  = 1;
                 ALU_Op   = ALU_ADD;
             end
 
             // Store (S-type)
-            7'b0100011: begin
+            S_TYPE: begin
                 MemWrite = 1;
-                ALU_Src  = 1;
                 ALU_Op   = ALU_ADD;
             end
 
             // Branch (B-type)
-            7'b1100011: begin
-                ALU_Src = 1;
+            B_TYPE: begin
                 case (funct3)
                     3'b000:  ALU_Op = ALU_BEQ;
                     3'b001:  ALU_Op = ALU_BNE;
@@ -89,36 +84,33 @@ module ControlUnit (
             end
 
             // JAL
-            7'b1101111: begin
+            I_TYPE_JAL: begin
                 RegWrite = 1;
-                ALU_Src  = 1;
                 ALU_Op   = ALU_JAL;
             end
 
             // JALR
-            7'b1100111: begin
+            J_TYPE: begin
                 RegWrite = 1;
-                ALU_Src  = 1;
                 ALU_Op   = ALU_JALR;
             end
 
             // AUIPC (U-type)
-            7'b0010111: begin
+            U_TYPE_AUIPC: begin
                 RegWrite = 1;
-                ALU_Src  = 1;
                 ALU_Op   = ALU_AUIPC;
             end
 
             // LUI (U-type)
-            7'b0110111: begin
+            U_TYPE_LUI: begin
                 RegWrite = 1;
-                ALU_Src  = 1;
                 ALU_Op   = ALU_LUI;
             end
 
             default: begin
                 ALU_Op = ALU_DEF;
             end
+            
         endcase
     end
 
