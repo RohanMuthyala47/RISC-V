@@ -84,13 +84,13 @@ module ControlUnit (
             end
 
             // JAL
-            I_TYPE_JAL: begin
+            J_TYPE: begin
                 RegWrite = 1;
                 ALU_Op   = ALU_JAL;
             end
 
             // JALR
-            J_TYPE: begin
+            I_TYPE_JALR: begin
                 RegWrite = 1;
                 ALU_Op   = ALU_JALR;
             end
@@ -110,7 +110,6 @@ module ControlUnit (
             default: begin
                 ALU_Op = ALU_DEF;
             end
-            
         endcase
     end
 
