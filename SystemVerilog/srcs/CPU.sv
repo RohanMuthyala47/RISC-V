@@ -1,3 +1,4 @@
+import cpu_pkg::*;
 `include "parameters.vh"
 
 module CPU (
@@ -15,7 +16,6 @@ module CPU (
     logic        MemRead;
     logic        MemtoReg;
     logic        MemWrite;
-    logic        ALU_Src;
     logic        RegWrite;
     logic [4:0]  ALU_Op;
     
@@ -41,7 +41,6 @@ module CPU (
     logic [DATA_WIDTH - 1:0] immediate;
     
     // ALU signals
-    logic [DATA_WIDTH - 1:0] alu_op2;
     logic [DATA_WIDTH - 1:0] alu_result;
     logic                    branch_taken;
     logic                    jal_jump;
@@ -52,8 +51,6 @@ module CPU (
     
     // Data Memory signals
     logic [DATA_WIDTH - 1:0] mem_read_data;
-    
-    assign alu_op2 = ALU_Src ? immediate : read_data2;
 
     assign write_data = (jal_jump | jalr_jump) ? (pc + 4) :
             MemtoReg ? mem_read_data : alu_result;
@@ -85,7 +82,6 @@ module CPU (
         .MemRead(MemRead),
         .MemtoReg(MemtoReg),
         .MemWrite(MemWrite),
-        .ALU_Src(ALU_Src),
         .RegWrite(RegWrite),
         .ALU_Op(ALU_Op)
     );
@@ -112,7 +108,8 @@ module CPU (
     // ALU
     ALU ALU (
         .op1(read_data1),
-        .op2(alu_op2),
+        .op2(read_data2),
+        .immediate(immediate),
         .ALU_Op(ALU_Op),
         .pc(pc),
         .alu_result(alu_result),
