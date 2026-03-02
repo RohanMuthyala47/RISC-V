@@ -1,9 +1,11 @@
+import cpu_pkg::*;
 `include "parameters.vh"
 
 module ALU (
     input  logic [DATA_WIDTH - 1:0] op1,
     input  logic [DATA_WIDTH - 1:0] op2,
-    input  logic [4:0]              ALU_Op,
+    input  logic [DATA_WIDTH - 1:0] immediate,
+    input  alu_op_t                 ALU_Op,
     input  logic [ADDR_WIDTH - 1:0] pc,
 
     output logic [DATA_WIDTH - 1:0] alu_result,
@@ -17,25 +19,31 @@ module ALU (
 );
 
     always_comb begin
-        alu_result   =  32'b0;
-        branch_taken = 1'b0;
-        jal_jump     = 1'b0;
-        jalr_jump    = 1'b0;
-
+	alu_result   = {DATA_WIDTH{1'b0}};
+    	branch_taken  = 1'b0;
+    	jal_jump      = 1'b0;
+    	jalr_jump     = 1'b0;
         case (ALU_Op)
             ALU_ADD  :  alu_result   = op1 + op2;
             ALU_SUB  :  alu_result   = op1 - op2;
-
             ALU_XOR  :  alu_result   = op1 ^ op2;
             ALU_OR   :  alu_result   = op1 | op2;
             ALU_AND  :  alu_result   = op1 & op2;
-
-            ALU_SLL  :  alu_result   = op1 << op2[4:0];
-            ALU_SRL  :  alu_result   = op1 >> op2[4:0];
-            ALU_SRA  :  alu_result   = $signed(op1) >>> op2[4:0];
-
-            ALU_SLT  :  alu_result   = ($signed(op1) < $signed(op2)) ? 32'd1 : 32'd0;
-            ALU_SLTU :  alu_result   = (op1 < op2) ? 32'd1 : 32'd0;
+            ALU_SLL  :  alu_result   = op1 << op2[$clog2(DATA_WIDTH)-1:0];
+            ALU_SRL  :  alu_result   = op1 >> op2[$clog2(DATA_WIDTH)-1:0];
+            ALU_SRA  :  alu_result   = $signed(op1) >>> op2[$clog2(DATA_WIDTH)-1:0];
+            ALU_SLT  :  alu_result   = ($signed(op1) < $signed(op2)) ? {{DATA_WIDTH-1{1'b0}}, 1'b1} : {DATA_WIDTH{1'b0}};
+            ALU_SLTU :  alu_result   = (op1 < op2) ? {{DATA_WIDTH-1{1'b0}}, 1'b1} : {DATA_WIDTH{1'b0}};
+            
+            ALU_ADDI  :  alu_result   = op1 + immediate;
+            ALU_XORI  :  alu_result   = op1 ^ immediate;
+            ALU_ORI   :  alu_result   = op1 | immediate;
+            ALU_ANDI  :  alu_result   = op1 & immediate;
+            ALU_SLLI  :  alu_result   = op1 << immediate[$clog2(DATA_WIDTH)-1:0];
+            ALU_SRLI  :  alu_result   = op1 >> immediate[$clog2(DATA_WIDTH)-1:0];
+            ALU_SRAI  :  alu_result   = $signed(op1) >>> immediate[$clog2(DATA_WIDTH)-1:0];
+            ALU_SLTI  :  alu_result   = ($signed(op1) < $signed(immediate)) ? {{DATA_WIDTH-1{1'b0}}, 1'b1} : {DATA_WIDTH{1'b0}};
+            ALU_SLTIU :  alu_result   = (op1 < immediate) ? {{DATA_WIDTH-1{1'b0}}, 1'b1} : {DATA_WIDTH{1'b0}};
 
             ALU_BEQ  :  branch_taken = (op1 == op2);
             ALU_BNE  :  branch_taken = (op1 != op2);
@@ -58,14 +66,14 @@ module ALU (
             end
             
             ALU_DEF: begin
-                alu_result   = 'b0;
+                alu_result   = {DATA_WIDTH{1'b0}};
                 branch_taken = 1'b0;
                 jal_jump     = 1'b0;
                 jalr_jump    = 1'b0;
             end
             
             default: begin
-                alu_result   = 'b0;
+                alu_result   = {DATA_WIDTH{1'b0}};
                 branch_taken = 1'b0;
                 jal_jump     = 1'b0;
                 jalr_jump    = 1'b0;
@@ -73,8 +81,8 @@ module ALU (
         endcase
     end
 
-    assign branch_target = pc + op2;
-    assign jal_target    = pc + op2;
-    assign jalr_target   = op1 + op2;
+    assign branch_target = pc + immediate;
+    assign jal_target    = pc + immediate;
+    assign jalr_target   = op1 + immediate;
 
 endmodule
