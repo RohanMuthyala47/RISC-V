@@ -10,7 +10,7 @@ module CPU (
     logic [ADDR_WIDTH - 1:0] pc;
     
     // Instruction Memory signals
-    logic [ADDR_WIDTH - 1:0] instruction;
+    logic [INSTR_WIDTH - 1:0] instruction;
     
     // Control Unit signals
     logic        MemRead;
@@ -134,3 +134,4 @@ module CPU (
     );
 
 endmodule
+
