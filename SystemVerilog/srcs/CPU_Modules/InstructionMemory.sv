@@ -2,12 +2,12 @@
 
 module InstructionMemory (
     input  logic [ADDR_WIDTH - 1:0] pc,
-    output logic [31:0] instruction
+    output logic [INSTR_WIDTH - 1:0] instruction
 );
 
     /* verilator lint_off WIDTHTRUNC */
 
-    logic [31:0] InstructionMemory [0 : MEMORY_SIZE - 1];
+    logic [INSTR_WIDTH - 1:0] InstructionMemory [0 : MEMORY_SIZE - 1];
 
     initial begin
         $readmemh("program.hex", InstructionMemory);
