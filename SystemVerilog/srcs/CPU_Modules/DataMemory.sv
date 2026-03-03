@@ -1,4 +1,4 @@
-`include "parameters.vh"
+`include "parameters.svh"
 
 module DataMemory (
     input  logic                    clk,
