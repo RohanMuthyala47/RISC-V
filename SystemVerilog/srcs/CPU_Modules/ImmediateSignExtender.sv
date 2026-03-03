@@ -1,4 +1,4 @@
-`include "parameters.vh"
+`include "parameters.svh"
 
 module ImmediateSignExtender (
     input  logic [ADDR_WIDTH - 1:0] instruction,
