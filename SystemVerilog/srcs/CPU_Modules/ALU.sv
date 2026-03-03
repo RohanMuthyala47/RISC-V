@@ -52,8 +52,8 @@ module ALU (
             ALU_BLTU :  branch_taken = (op1 < op2);
             ALU_BGEU :  branch_taken = (op1 >= op2);
 
-            ALU_LUI  :  alu_result   = op2;
-            ALU_AUIPC:  alu_result   = pc + op2;
+            ALU_LUI  :  alu_result   = immediate;
+            ALU_AUIPC:  alu_result   = pc + immediate;
 
             ALU_JAL: begin
                 alu_result = pc + 4;
