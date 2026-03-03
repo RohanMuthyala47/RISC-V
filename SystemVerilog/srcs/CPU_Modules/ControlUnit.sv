@@ -1,5 +1,5 @@
 import cpu_pkg::*;
-`include "parameters.vh"
+`include "parameters.svh"
 
 module ControlUnit (
     input  opcode_t    opcode,
