@@ -1,7 +1,7 @@
 `include "parameters.vh"
 
 module InstructionMemory (
-    input  logic [ADDR_WIDTH - 1:0] pc,
+    input  logic [ADDR_WIDTH - 1:0]  pc,
     output logic [INSTR_WIDTH - 1:0] instruction
 );
 
@@ -14,7 +14,7 @@ module InstructionMemory (
     end
 
     always_comb begin
-        instruction = InstructionMemory[pc[ADDR_WIDTH - 1:2]];
+            instruction = InstructionMemory[pc[ADDR_WIDTH - 1:2]];
     end
 
 endmodule
