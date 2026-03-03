@@ -15,7 +15,7 @@ module ProgramCounter (
     output logic [ADDR_WIDTH - 1:0] pc
 );
 
-    logic [31:0] next_pc;
+    logic [ADDR_WIDTH - 1:0]        next_pc;
     
     // Set program counter to branch target if branch instruction,
     // jump target if jump instruction,
@@ -35,14 +35,14 @@ module ProgramCounter (
         end
         
         else begin
-            next_pc = pc + 32'd4;
+            next_pc = pc + 'd4;
         end
     end
 
     // Update Program Counter
     always_ff @(posedge clk) begin
         if (rst)
-            pc <=32 'd0;
+            pc <= {DATA_WIDTH{1'b0}};
         else
             pc <= next_pc;
     end
