@@ -52,86 +52,84 @@ module CPU (
     // Data Memory signals
     logic [DATA_WIDTH - 1:0] mem_read_data;
 
-    assign write_data = (jal_jump | jalr_jump) ? (pc + 4) :
-            MemtoReg ? mem_read_data : alu_result;
+    assign write_data = (jal_jump | jalr_jump) ? (pc + 'd4) : MemtoReg ? mem_read_data : alu_result;
     
     // Program Counter
     ProgramCounter ProgramCounter (
-        .clk(clk),
-        .rst(rst),
-        .branch_taken(branch_taken),
-        .branch_target(branch_target),
-        .is_jal(jal_jump),
-        .is_jalr(jalr_jump),
-        .jal_target(jal_target),
-        .jalr_target(jalr_target),
-        .pc(pc)
+        .clk           (clk),
+        .rst           (rst),
+        .branch_taken  (branch_taken),
+        .branch_target (branch_target),
+        .is_jal        (jal_jump),
+        .is_jalr       (jalr_jump),
+        .jal_target    (jal_target),
+        .jalr_target   (jalr_target),
+        .pc            (pc)
     );
     
     // Instruction Memory
     InstructionMemory InstructionMemory (
-        .pc(pc),
-        .instruction(instruction)
+        .pc          (pc),
+        .instruction (instruction)
     );
     
     // Control Unit
     ControlUnit ControlUnit (
-        .opcode(opcode),
-        .funct3(funct3),
-        .funct7(funct7),
-        .MemRead(MemRead),
-        .MemtoReg(MemtoReg),
-        .MemWrite(MemWrite),
-        .RegWrite(RegWrite),
-        .ALU_Op(ALU_Op)
+        .opcode   (opcode),
+        .funct3   (funct3),
+        .funct7   (funct7),
+        .MemRead  (MemRead),
+        .MemtoReg (MemtoReg),
+        .MemWrite (MemWrite),
+        .RegWrite (RegWrite),
+        .ALU_Op   (ALU_Op)
     );
     
     // Register File
     RegisterFile RegisterFile (
-        .clk(clk),
-        .rst(rst),
-        .read_address1(rs1),
-        .read_address2(rs2),
-        .write_address(rd),
-        .data(write_data),
-        .write_enable(RegWrite),
-        .read_data1(read_data1),
-        .read_data2(read_data2)
+        .clk           (clk),
+        .rst           (rst),
+        .read_address1 (rs1),
+        .read_address2 (rs2),
+        .write_address (rd),
+        .data          (write_data),
+        .write_enable  (RegWrite),
+        .read_data1    (read_data1),
+        .read_data2    (read_data2)
     );
     
     // Sign Extender
     ImmediateSignExtender ImmediateSignExtender (
-        .instruction(instruction),
-        .immediate(immediate)
+        .instruction (instruction),
+        .immediate    (immediate)
     );
     
     // ALU
     ALU ALU (
-        .op1(read_data1),
-        .op2(read_data2),
-        .immediate(immediate),
-        .ALU_Op(ALU_Op),
-        .pc(pc),
-        .alu_result(alu_result),
-        .branch_taken(branch_taken),
-        .jal_jump(jal_jump),
-        .jalr_jump(jalr_jump),
-        .branch_target(branch_target),
-        .jal_target(jal_target),
-        .jalr_target(jalr_target)
+        .op1           (read_data1),
+        .op2           (read_data2),
+        .immediate     (immediate),
+        .ALU_Op        (ALU_Op),
+        .pc            (pc),
+        .alu_result    (alu_result),
+        .branch_taken  (branch_taken),
+        .jal_jump      (jal_jump),
+        .jalr_jump     (jalr_jump),
+        .branch_target (branch_target),
+        .jal_target    (jal_target),
+        .jalr_target   (jalr_target)
     );
     
     // Data Memory
     DataMemory DataMemory (
-        .clk(clk),
-        .rst(rst),
-        .MemRead(MemRead),
-        .MemWrite(MemWrite),
-        .address(alu_result),
-        .write_data(read_data2),
-        .funct3(funct3),
-        .read_data(mem_read_data)
+        .clk        (clk),
+        .rst        (rst),
+        .MemRead    (MemRead),
+        .MemWrite   (MemWrite),
+        .address    (alu_result),
+        .write_data (read_data2),
+        .funct3     (funct3),
+        .read_data  (mem_read_data)
     );
 
 endmodule
-
