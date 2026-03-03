@@ -1,4 +1,4 @@
-`include "parameters.vh"
+`include "parameters.svh"
 
 module InstructionMemory (
     input  logic [ADDR_WIDTH - 1:0]  pc,
