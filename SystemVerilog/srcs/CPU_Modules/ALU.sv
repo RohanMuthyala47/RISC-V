@@ -1,5 +1,5 @@
 import cpu_pkg::*;
-`include "parameters.vh"
+`include "parameters.svh"
 
 module ALU (
     input  logic [DATA_WIDTH - 1:0] op1,
