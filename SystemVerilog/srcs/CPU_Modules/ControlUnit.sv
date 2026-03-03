@@ -61,13 +61,13 @@ module ControlUnit (
                 RegWrite = 1;
                 MemRead  = 1;
                 MemtoReg = 1;
-                ALU_Op   = ALU_ADD;
+                ALU_Op   = ALU_ADDI;
             end
 
             // Store (S-type)
             S_TYPE: begin
                 MemWrite = 1;
-                ALU_Op   = ALU_ADD;
+                ALU_Op   = ALU_ADDI;
             end
 
             // Branch (B-type)
