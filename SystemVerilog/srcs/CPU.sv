@@ -1,5 +1,5 @@
 import cpu_pkg::*;
-`include "parameters.vh"
+`include "parameters.svh"
 
 module CPU (
     input logic clk,
@@ -133,3 +133,4 @@ module CPU (
     );
 
 endmodule
+
