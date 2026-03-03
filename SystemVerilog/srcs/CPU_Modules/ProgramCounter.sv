@@ -1,4 +1,4 @@
-`include "parameters.vh"
+`include "parameters.svh"
 
 module ProgramCounter (
     input  logic                    clk,
