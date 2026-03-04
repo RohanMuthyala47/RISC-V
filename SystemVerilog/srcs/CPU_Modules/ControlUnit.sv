@@ -108,7 +108,7 @@ module ControlUnit (
             end
 
             default: begin
-                ALU_Op = ALU_DEF;
+                ALU_Op   = ALU_DEF;
             end
         endcase
     end
