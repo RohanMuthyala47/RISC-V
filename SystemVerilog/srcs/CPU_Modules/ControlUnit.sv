@@ -36,7 +36,7 @@ module ControlUnit (
                     10'b0100000_101: ALU_Op = ALU_SRA;
                     10'b0000000_010: ALU_Op = ALU_SLT;
                     10'b0000000_011: ALU_Op = ALU_SLTU;
-                    default:         ALU_Op = ALU_DEF;
+                    default        : ALU_Op = ALU_DEF;
                 endcase
             end
 
@@ -49,7 +49,7 @@ module ControlUnit (
                     3'b110:  ALU_Op = ALU_ORI;
                     3'b111:  ALU_Op = ALU_ANDI;
                     3'b001:  ALU_Op = ALU_SLLI;
-                    3'b101:  ALU_Op = (funct7 == 7'b0000000) ? ALU_SRLI : ALU_SRAI;
+                    3'b101:  ALU_Op = (funct7 == 7'b0) ? ALU_SRLI : ALU_SRAI;
                     3'b010:  ALU_Op = ALU_SLTI;
                     3'b011:  ALU_Op = ALU_SLTIU;
                     default: ALU_Op = ALU_DEF;
