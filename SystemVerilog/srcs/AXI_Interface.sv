@@ -132,4 +132,3 @@ interface AXI_interface #(
     );
 
 endinterface
-
