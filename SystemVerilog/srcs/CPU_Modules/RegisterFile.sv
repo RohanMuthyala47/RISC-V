@@ -18,8 +18,7 @@ module RegisterFile(
     logic [DATA_WIDTH - 1:0] RegisterFile [0:REGISTER_FILE_SIZE - 1];
     integer i;
     
-    always_ff @(posedge clk)
-    begin
+    always_ff @(posedge clk) begin
         if(rst) begin
             for(i = 0;i < REGISTER_FILE_SIZE; i = i + 1)
                 RegisterFile[i] <= {DATA_WIDTH{1'b0}};
