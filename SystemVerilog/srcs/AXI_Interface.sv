@@ -1,7 +1,7 @@
 interface AXI_interface #( 
     parameter ADDR_WIDTH = 32, // Address bus width
     parameter DATA_WIDTH = 32, // Data bus width
-    parameter ID_WIDTH = 4     // ID bus width
+    parameter ID_WIDTH   = 4   // ID bus width
 );
 
     // Global signals
@@ -132,3 +132,4 @@ interface AXI_interface #(
     );
 
 endinterface
+
