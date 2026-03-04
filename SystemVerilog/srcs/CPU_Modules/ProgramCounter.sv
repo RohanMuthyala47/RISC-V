@@ -21,7 +21,6 @@ module ProgramCounter (
     // jump target if jump instruction,
     // otherwise increment by 4
     always_comb begin
-
         if (is_jal) begin
             next_pc = jal_target;
         end
