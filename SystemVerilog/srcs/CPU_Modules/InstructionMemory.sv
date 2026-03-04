@@ -7,7 +7,7 @@ module InstructionMemory (
 
     /* verilator lint_off WIDTHTRUNC */
 
-    logic [INSTR_WIDTH - 1:0] InstructionMemory [0 : MEMORY_SIZE - 1];
+    logic [INSTR_WIDTH - 1:0] InstructionMemory [0:MEMORY_SIZE - 1];
 
     initial begin
         $readmemh("program.hex", InstructionMemory);
