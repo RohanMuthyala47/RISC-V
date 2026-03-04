@@ -21,8 +21,7 @@ module DataMemory (
     logic [MEMORY_ADDR_WIDTH - 1:0] word_addr;
     assign word_addr = address[MEMORY_ADDR_WIDTH + 1:2];
     
-    always_ff @(posedge clk)
-    begin
+    always_ff @(posedge clk) begin
         if(rst) begin
             for(i = 0;i < REGISTER_FILE_SIZE; i = i + 1)
                 RegisterFile[i] <= {DATA_WIDTH{1'b0}};
