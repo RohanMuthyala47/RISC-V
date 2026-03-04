@@ -133,5 +133,3 @@ module CPU (
     );
 
 endmodule
-
-
