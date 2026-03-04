@@ -10,7 +10,7 @@ module ImmediateSignExtender (
     always_comb begin
         case (opcode)
             I_TYPE, I_TYPE_LOAD, I_TYPE_JALR: // I-type
-            immediate = {{21{instruction[31]}}, instruction[30:20]};
+            	immediate = {{21{instruction[31]}}, instruction[30:20]};
                 
             I_TYPE_SYS: // I-type ECALL and EBREAK
                 immediate = {DATA_WIDTH{1'b0}};
