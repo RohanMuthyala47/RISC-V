@@ -100,7 +100,7 @@ module CPU (
     
     // Sign Extender
     ImmediateSignExtender ImmediateSignExtender (
-        .instruction (instruction),
+        .instruction  (instruction),
         .immediate    (immediate)
     );
     
@@ -133,4 +133,5 @@ module CPU (
     );
 
 endmodule
+
 
