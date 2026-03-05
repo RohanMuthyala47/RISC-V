@@ -35,36 +35,38 @@ module CPU_Pipelined (
     
     // Program Counter
     ProgramCounter ProgramCounter (
-        .clk(clk),
-        .rst(rst),
-        .branch_taken(branch_taken),
-        .branch(Branch_ID),
-        .branch_target(branch_target),
-        .is_jal(jal_jump),
-        .is_jalr(jalr_jump),
-        .jal_target(jal_target),
-        .jalr_target(jalr_target),
-        .pc(PC_IF)
+        .clk           (clk),
+        .rst           (rst),
+        
+        .branch_taken  (branch_taken),
+        .branch_target (branch_target),
+        
+        .is_jal        (jal_jump),
+        .is_jalr       (jalr_jump),
+        
+        .jal_target    (jal_target),
+        .jalr_target   (jalr_target),
+        
+        .pc            (PC_IF)
     );
     
     // Instruction Memory
     InstructionMemory InstructionMemory (
-        .clk(clk),
-        .rst(rst),
-        .pc(PC_IF),
-        .instruction(Instruction_IF)
+        .pc          (PC_IF),
+        .instruction (Instruction_IF)
     );
     
     // IF-ID PIPELINE REGISTERS
     logic [31:0] PC_IF_ID, Instruction_IF_ID;
+    
     always_ff @(posedge clk)
     begin
         if(rst) begin
-            PC_IF_ID <= 0;
+            PC_IF_ID          <= 0;
             Instruction_IF_ID <= 0;
         end
         else begin
-            PC_IF_ID <= PC_IF;
+            PC_IF_ID          <= PC_IF;
             Instruction_IF_ID <= Instruction_IF;
         end
     end
@@ -72,94 +74,100 @@ module CPU_Pipelined (
     logic [31:0] PC_ID = PC_IF_ID, Instruction_ID = Instruction_IF_ID;
     
     // Instruction fields
-    logic [6:0]  opcode;
-    logic [4:0]  rs1, rs2, rd_ID;
-    logic [2:0]  funct3_ID;
-    logic [6:0]  funct7;
+    logic [6:0] opcode;
+    logic [4:0] rs1, rs2, rd_ID;
+    logic [2:0] funct3_ID;
+    logic [6:0] funct7;
     
      // Extract instruction fields
-    assign opcode = Instruction_ID[6:0];
+    assign opcode    = Instruction_ID[6:0];
     assign rd_ID     = Instruction_ID[11:7];
     assign funct3_ID = Instruction_ID[14:12];
-    assign rs1    = Instruction_ID[19:15];
-    assign rs2    = Instruction_ID[24:20];
-    assign funct7 = Instruction_ID[31:25];
+    assign rs1       = Instruction_ID[19:15];
+    assign rs2       = Instruction_ID[24:20];
+    assign funct7    = Instruction_ID[31:25];
     
     // Control Unit signals
-    logic           MemRead_ID;
-    logic           MemtoReg_ID;
-    logic           MemWrite_ID;
-    logic           ALU_Src_ID;
-    logic           RegWrite_ID;
-    logic [4:0]     ALU_Op_ID;
+    logic       MemRead_ID;
+    logic       MemtoReg_ID;
+    logic       MemWrite_ID;
+    logic       ALU_Src_ID;
+    logic       RegWrite_ID;
+    logic [4:0] ALU_Op_ID;
     
     // Control Unit
     ControlUnit ControlUnit (
-        .opcode(opcode),
-        .funct3(funct3_ID),
-        .funct7(funct7),
-        .Branch(Branch_ID),
-        .MemRead(MemRead_ID),
-        .MemtoReg(MemtoReg_ID),
-        .MemWrite(MemWrite_ID),
-        .ALU_Src(ALU_Src_ID),
-        .RegWrite(RegWrite_ID),
-        .ALU_Op(ALU_Op_ID)
+        .opcode   (opcode),
+        .funct3   (funct3_ID),
+        .funct7   (funct7),
+        
+        .MemRead  (MemRead_ID),
+        .MemtoReg (MemtoReg_ID),
+        .MemWrite (MemWrite_ID),
+        .RegWrite (RegWrite_ID),
+        
+        .ALU_Op   (ALU_Op_ID)
     );
     
     // Register File signals
     logic [31:0] read_data1_ID, read_data2_ID;
-    logic [31:0] write_data;
+    logic [31:0] reg_write_data;
     
-    assign write_data = MemtoReg_WB ? mem_read_data_WB : alu_result_WB;
+    assign reg_write_data = MemtoReg_WB ? mem_read_data_WB : alu_result_WB;
     
     // Register File
     RegisterFile RegisterFile (
-        .clk(clk),
-        .rst(rst),
-        .read_address1(rs1),
-        .read_address2(rs2),
-        .write_address(rd_WB),
-        .data(write_data),
-        .write_enable(RegWrite_WB),
-        .read_data1(read_data1_ID),
-        .read_data2(read_data2_ID)
+        .clk           (clk),
+        .rst           (rst),
+        
+        .read_address1 (rs1),
+        .read_address2 (rs2),
+        
+        .write_address (rd_WB),
+        .data          (reg_write_data),
+        .write_enable  (RegWrite_WB),
+        
+        .read_data1    (read_data1_ID),
+        .read_data2    (read_data2_ID)
     );
     
     // Sign Extender
     ImmediateSignExtender ImmediateSignExtender (
-        .instruction(Instruction_ID),
-        .immediate(Immediate_ID)
+        .instruction (Instruction_ID),
+        
+        .immediate   (Immediate_ID)
     );
     
     // IF-ID PIPELINE REGISTERS
     logic [31:0] PC_ID_E;
-    logic [4:0] rd_ID_E;
-    logic [2:0] funct3_ID_E;
+    logic [4:0]  rd_ID_E;
+    logic [2:0]  funct3_ID_E;
     logic        MemRead_ID_E;
     logic        MemtoReg_ID_E;
     logic        MemWrite_ID_E;
-    logic        ALU_Src_ID_E;
     logic        RegWrite_ID_E;
     logic [4:0]  ALU_Op_ID_E;
     logic [2:0]  instr_type_ID_E;
     logic [31:0] read_data1_ID_E, read_data2_ID_E;
     logic [31:0] Immediate_ID_E;
-    always_ff @(posedge clk)
-    begin
+    
+    always_ff @(posedge clk) begin
         if(rst) begin
-            PC_ID_E <= 0;
-            rd_ID_E <= 0;
-            funct3_ID_E <= 0;
-            MemRead_ID_E <= 0;
-            MemtoReg_ID_E <= 0;
-            MemWrite_ID_E <= 0;
-            ALU_Src_ID_E <= 0;
-            RegWrite_ID_E <= 0;
-            ALU_Op_ID_E <= 0;
+            PC_ID_E         <= 0;
+            
+            rd_ID_E         <= 0;
+            
+            funct3_ID_E     <= 0;
+            
+            MemRead_ID_E    <= 0;
+            MemtoReg_ID_E   <= 0;
+            MemWrite_ID_E   <= 0;
+            RegWrite_ID_E   <= 0;
+            
+            ALU_Op_ID_E     <= 0;
             read_data1_ID_E <= 0;
             read_data2_ID_E <= 0;
-            Immediate_ID_E <= 0;
+            Immediate_ID_E  <= 0;
         end
         else begin
             PC_ID_E <= PC_ID;
@@ -214,84 +222,86 @@ module CPU_Pipelined (
     logic        MemtoReg_E_M;
     logic        MemWrite_E_M;
     logic        RegWrite_E_M;
-    logic        Branch_E_M;
     logic [31:0] alu_result_E_M;
     
-    always_ff @(posedge clk)
-        begin
-            if(rst) begin
-                rd_E_M <= 0;
-                funct3_E_M <= 0;
-                read_data2_E_M <= 0;
-                Branch_E_M <= 0;
-                MemRead_E_M <= 0;
-                MemtoReg_E_M <= 0;
-                MemWrite_E_M <= 0;
-                RegWrite_E_M <= 0;
-                alu_result_E_M <= 0;
-            end
-            else begin
-                rd_E_M <= rd_E;
-                funct3_E_M <= funct3_E;
-                read_data2_E_M <= read_data2_E;
-                MemRead_E_M <= MemRead_E;
-                MemtoReg_E_M <= MemtoReg_E;
-                MemWrite_E_M <= MemWrite_E;
-                RegWrite_E_M <= RegWrite_E;
-                alu_result_E_M <= alu_result_E;
-            end
+    always_ff @(posedge clk) begin
+        if(rst) begin
+            rd_E_M <= 0;
+            funct3_E_M <= 0;
+            read_data2_E_M <= 0;
+            MemRead_E_M <= 0;
+            MemtoReg_E_M <= 0;
+            MemWrite_E_M <= 0;
+            RegWrite_E_M <= 0;
+            alu_result_E_M <= 0;
         end
+        else begin
+            rd_E_M <= rd_E;
+            funct3_E_M <= funct3_E;
+            read_data2_E_M <= read_data2_E;
+            MemRead_E_M <= MemRead_E;
+            MemtoReg_E_M <= MemtoReg_E;
+            MemWrite_E_M <= MemWrite_E;
+            RegWrite_E_M <= RegWrite_E;
+            alu_result_E_M <= alu_result_E;
+        end
+    end
     
-    logic [4:0] rd_M = rd_E_M;
+    logic [4:0]  rd_M = rd_E_M;
     logic [2:0]  funct3_M = funct3_E_M;
+    
     logic [31:0] read_data2_M = read_data2_E_M;
+    
     logic        MemRead_M = MemRead_E_M;
     logic        MemtoReg_M = MemtoReg_E_M;
     logic        MemWrite_M = MemWrite_E_M;
     logic        RegWrite_M = RegWrite_E_M;
-    logic        Branch_M = Branch_E_M;
+    
     logic [31:0] alu_result_M = alu_result_E_M;
     
     DataMemory DataMemory (
-            .clk(clk),
-            .rst(rst),
-            .MemRead(MemRead_M),
-            .MemWrite(MemWrite_M),
-            .address(alu_result_M),
-            .write_data(read_data2_M),
-            .funct3(funct3_M),
-            .read_data(mem_read_data_M)
-        );
+        .clk        (clk),
+        .rst        (rst),
+    
+        .MemRead    (MemRead_M),
+        .MemWrite   (MemWrite_M),
+        
+        .address    (alu_result_M),
+        .write_data (read_data2_M),
+        
+        .funct3     (funct3_M),
+        
+        .read_data  (mem_read_data_M)
+    );
     
     // M-WB PIPELINE REGISTERS
-    logic [4:0] rd_M_WB;
+    logic [4:0]  rd_M_WB;
     logic        MemtoReg_M_WB;
     logic        RegWrite_M_WB;
     logic [31:0] alu_result_M_WB;
     logic [31:0] mem_read_data_M_WB;
     
-    always_ff @(posedge clk)
-    begin
+    always_ff @(posedge clk) begin
         if(rst) begin
-            rd_M_WB <= 0;
-            MemtoReg_M_WB <= 0;
-            RegWrite_M_WB <= 0;
-            alu_result_M_WB <= 0;
+            rd_M_WB            <= 0;
+            MemtoReg_M_WB      <= 0;
+            RegWrite_M_WB      <= 0;
+            alu_result_M_WB    <= 0;
             mem_read_data_M_WB <= 0;
         end
         else begin
-            rd_M_WB <= rd_M;
-            MemtoReg_M_WB <= MemtoReg_M;
-            RegWrite_M_WB <= RegWrite_M;
-            alu_result_M_WB <= alu_result_M;
+            rd_M_WB            <= rd_M;
+            MemtoReg_M_WB      <= MemtoReg_M;
+            RegWrite_M_WB      <= RegWrite_M;
+            alu_result_M_WB    <= alu_result_M;
             mem_read_data_M_WB <= mem_read_data_M;
         end
     end
     
-    logic [4:0]  rd_WB = rd_M_WB;
-    logic        MemtoReg_WB = MemtoReg_M_WB;
-    logic        RegWrite_WB = RegWrite_M_WB;
-    logic [31:0] alu_result_WB = alu_result_M_WB;
+    logic [4:0]  rd_WB            = rd_M_WB;
+    logic        MemtoReg_WB      = MemtoReg_M_WB;
+    logic        RegWrite_WB      = RegWrite_M_WB;
+    logic [31:0] alu_result_WB    = alu_result_M_WB;
     logic [31:0] mem_read_data_WB = mem_read_data_M_WB;
     
 endmodule
