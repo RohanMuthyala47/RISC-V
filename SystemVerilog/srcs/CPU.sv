@@ -6,10 +6,10 @@ module CPU (
     input logic rst
 );
 
-    // Program Counter signals
+    // Program Counter
     logic [ADDR_WIDTH - 1:0] pc;
     
-    // Instruction Memory signals
+    // Instruction
     logic [INSTR_WIDTH - 1:0] instruction;
     
     // Control Unit signals
@@ -20,24 +20,26 @@ module CPU (
     logic [4:0]  ALU_Op;
     
     // Instruction fields
-    logic [6:0]  opcode;
-    logic [4:0]  rs1, rs2, rd;
-    logic [2:0]  funct3;
-    logic [6:0]  funct7;
+    logic [6:0]                            opcode;
+    logic [REGISTER_FILE_ADDR_WIDTH - 1:0] rs1, rs2, rd;
+    logic [2:0]                            funct3;
+    logic [6:0]                            funct7;
     
     // Extract instruction fields
     assign opcode = instruction[6:0];
-    assign rd     = instruction[11:7];
-    assign funct3 = instruction[14:12];
     assign rs1    = instruction[19:15];
     assign rs2    = instruction[24:20];
+    assign rd     = instruction[11:7];
+    assign funct3 = instruction[14:12];
     assign funct7 = instruction[31:25];
     
     // Register File signals
     logic [DATA_WIDTH - 1:0] read_data1, read_data2;
-    logic [DATA_WIDTH - 1:0] write_data;
+    // Data Memory -> Register File signals
+    logic [DATA_WIDTH - 1:0] reg_write_data;
+    assign reg_write_data = (jal_jump || jalr_jump) ? (pc + 'd4) : MemtoReg ? mem_read_data : alu_result;
     
-    // Sign Extender signals
+    // Sign-extended Immediate
     logic [DATA_WIDTH - 1:0] immediate;
     
     // ALU signals
@@ -52,83 +54,101 @@ module CPU (
     // Data Memory signals
     logic [DATA_WIDTH - 1:0] mem_read_data;
 
-    assign write_data = (jal_jump | jalr_jump) ? (pc + 'd4) : MemtoReg ? mem_read_data : alu_result;
-    
     // Program Counter
-    ProgramCounter ProgramCounter (
+    ProgramCounter pc_inst (
         .clk           (clk),
         .rst           (rst),
+        
         .branch_taken  (branch_taken),
         .branch_target (branch_target),
+        
         .is_jal        (jal_jump),
         .is_jalr       (jalr_jump),
         .jal_target    (jal_target),
         .jalr_target   (jalr_target),
+        
         .pc            (pc)
     );
     
     // Instruction Memory
-    InstructionMemory InstructionMemory (
+    InstructionMemory imem_inst (
         .pc          (pc),
+        
         .instruction (instruction)
     );
     
     // Control Unit
-    ControlUnit ControlUnit (
+    ControlUnit cu_inst (
         .opcode   (opcode),
         .funct3   (funct3),
         .funct7   (funct7),
+        
         .MemRead  (MemRead),
         .MemtoReg (MemtoReg),
         .MemWrite (MemWrite),
         .RegWrite (RegWrite),
+        
         .ALU_Op   (ALU_Op)
     );
     
     // Register File
-    RegisterFile RegisterFile (
+    RegisterFile regfile_inst (
         .clk           (clk),
         .rst           (rst),
+        
         .read_address1 (rs1),
         .read_address2 (rs2),
+        
         .write_address (rd),
-        .data          (write_data),
+        .write_data    (reg_write_data),
         .write_enable  (RegWrite),
+        
         .read_data1    (read_data1),
         .read_data2    (read_data2)
     );
     
     // Sign Extender
-    ImmediateSignExtender ImmediateSignExtender (
-        .instruction  (instruction),
-        .immediate    (immediate)
+    ImmediateSignExtender immsignext_inst (
+        .instruction (instruction),
+        
+        .immediate   (immediate)
     );
     
     // ALU
-    ALU ALU (
+    ALU alu_inst (
+        .pc            (pc),
+        
         .op1           (read_data1),
         .op2           (read_data2),
-        .immediate     (immediate),
+        
         .ALU_Op        (ALU_Op),
-        .pc            (pc),
-        .alu_result    (alu_result),
+        
+        .immediate     (immediate),
+        
         .branch_taken  (branch_taken),
+        .branch_target (branch_target),
+        
         .jal_jump      (jal_jump),
         .jalr_jump     (jalr_jump),
-        .branch_target (branch_target),
         .jal_target    (jal_target),
-        .jalr_target   (jalr_target)
+        .jalr_target   (jalr_target),
+
+        .alu_result    (alu_result)
     );
     
     // Data Memory
-    DataMemory DataMemory (
+    DataMemory dmem_inst (
         .clk        (clk),
         .rst        (rst),
+        
+        .funct3     (funct3),
+        
         .MemRead    (MemRead),
         .MemWrite   (MemWrite),
+        
         .address    (alu_result),
         .write_data (read_data2),
-        .funct3     (funct3),
+        
         .read_data  (mem_read_data)
     );
 
