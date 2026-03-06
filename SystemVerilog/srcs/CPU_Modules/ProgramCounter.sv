@@ -40,10 +40,13 @@ module ProgramCounter (
 
     // Update Program Counter
     always_ff @(posedge clk) begin
-        if (rst)
+        if (rst) begin
             pc <= {DATA_WIDTH{1'b0}};
-        else
+        end
+        
+        else begin
             pc <= next_pc;
+        end
     end
 
 endmodule
