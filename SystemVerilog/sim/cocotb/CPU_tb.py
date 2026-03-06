@@ -21,9 +21,9 @@ async def cpu_test(dut):
     await Timer(1000, unit="ns")
 
     for i in range(32):
-        assert dut.RegisterFile.RegisterFile[i].value == expected_register_values[i], (f"Mismatch at Resgister {i}:"
+        assert dut.regfile_inst.RegisterFile[i].value == expected_register_values[i], (f"Mismatch at Resgister {i}:"
                                                                                        f"expected = {expected_register_values[i]}, "
-                                                                                       f"got={dut.RegisterFile.RegisterFile[i].value}"
+                                                                                       f"got={dut.regfile_isnt.RegisterFile[i].value}"
                                                                                       )
 
     print("Test Completed")
