@@ -15,16 +15,16 @@ module ControlUnit (
 );
 
     always_comb begin
-        MemRead  = 0;
-        MemtoReg = 0;
-        MemWrite = 0;
-        RegWrite = 0;
+        MemRead  = 1'b0;
+        MemtoReg = 1'b0;
+        MemWrite = 1'b0;
+        RegWrite = 1'b0;
         ALU_Op   = ALU_DEF;
 
         case (opcode)
             // R-type
             R_TYPE: begin
-                RegWrite = 1;
+                RegWrite = 1'b1;
                 case ({funct7, funct3})
                     10'b0000000_000: ALU_Op = ALU_ADD;
                     10'b0100000_000: ALU_Op = ALU_SUB;
@@ -36,13 +36,13 @@ module ControlUnit (
                     10'b0100000_101: ALU_Op = ALU_SRA;
                     10'b0000000_010: ALU_Op = ALU_SLT;
                     10'b0000000_011: ALU_Op = ALU_SLTU;
-                    default        : ALU_Op = ALU_DEF;
+                    default:         ALU_Op = ALU_DEF;
                 endcase
             end
 
             // I-type (Immediate)
             I_TYPE: begin
-                RegWrite = 1;
+                RegWrite = 1'b1;
                 case (funct3)
                     3'b000:  ALU_Op = ALU_ADDI;
                     3'b100:  ALU_Op = ALU_XORI;
@@ -58,15 +58,15 @@ module ControlUnit (
 
             // Load (I-type)
             I_TYPE_LOAD: begin
-                RegWrite = 1;
-                MemRead  = 1;
-                MemtoReg = 1;
+                RegWrite = 1'b1;
+                MemRead  = 1'b1;
+                MemtoReg = 1'b1;
                 ALU_Op   = ALU_ADDI;
             end
 
             // Store (S-type)
             S_TYPE: begin
-                MemWrite = 1;
+                MemWrite = 1'b1;
                 ALU_Op   = ALU_ADDI;
             end
 
@@ -83,32 +83,32 @@ module ControlUnit (
                 endcase
             end
 
-            // JAL
+            // JAL (J-type)
             J_TYPE: begin
-                RegWrite = 1;
+                RegWrite = 1'b1;
                 ALU_Op   = ALU_JAL;
             end
 
-            // JALR
+            // JALR (I-type)
             I_TYPE_JALR: begin
-                RegWrite = 1;
+                RegWrite = 1'b1;
                 ALU_Op   = ALU_JALR;
             end
 
             // AUIPC (U-type)
             U_TYPE_AUIPC: begin
-                RegWrite = 1;
+                RegWrite = 1'b1;
                 ALU_Op   = ALU_AUIPC;
             end
 
             // LUI (U-type)
             U_TYPE_LUI: begin
-                RegWrite = 1;
+                RegWrite = 1'b1;
                 ALU_Op   = ALU_LUI;
             end
 
             default: begin
-                ALU_Op   = ALU_DEF;
+                ALU_Op = ALU_DEF;
             end
         endcase
     end
