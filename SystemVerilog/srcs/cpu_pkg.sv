@@ -1,16 +1,28 @@
 package cpu_pkg;
 
+    parameter DATA_WIDTH     = 32;
+    parameter ADDR_WIDTH     = 32;
+    parameter INSTR_WIDTH    = 32;
+
+    parameter REG_FILE_SIZE  = 32;
+    parameter REG_ADDR_WIDTH = $clog2(REG_FILE_SIZE);
+
+    parameter MEM_DEPTH      = 1024;
+    parameter MEM_ADDR_WIDTH = $clog2(MEM_DEPTH);
+
+    parameter CACHE_SIZE     = 128;
+
     typedef enum logic [6:0] {
-	R_TYPE       = 7'b0110011,
-	I_TYPE       = 7'b0010011,
-	I_TYPE_LOAD  = 7'b0000011,
-	I_TYPE_SYS   = 7'b1110011,
-	S_TYPE       = 7'b0100011,
-	B_TYPE       = 7'b1100011,
-	U_TYPE_AUIPC = 7'b0010111,
-	U_TYPE_LUI   = 7'b0110111,
-	I_TYPE_JALR  = 7'b1100111,
-	J_TYPE       = 7'b1101111
+		R_TYPE       = 7'b0110011,
+		I_TYPE       = 7'b0010011,
+		I_TYPE_LOAD  = 7'b0000011,
+		I_TYPE_SYS   = 7'b1110011,
+		S_TYPE       = 7'b0100011,
+		B_TYPE       = 7'b1100011,
+		U_TYPE_AUIPC = 7'b0010111,
+		U_TYPE_LUI   = 7'b0110111,
+		I_TYPE_JALR  = 7'b1100111,
+		J_TYPE       = 7'b1101111
     } opcode_t;
 
     typedef enum logic [4:0] {
@@ -59,12 +71,12 @@ package cpu_pkg;
     	
 
     typedef enum logic [2:0] {
-	IDLE,
-	WR_REQ,
-	WR_DATA,
-	WR_WAIT_RESP,
-	RD_REQ,
-	RD_DATA
+		IDLE,
+		WR_REQ,
+		WR_DATA,
+		WR_WAIT_RESP,
+		RD_REQ,
+		RD_DATA
     } cache_state_t;
 
 endpackage
