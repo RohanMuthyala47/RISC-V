@@ -1,5 +1,4 @@
 import cpu_pkg::*;
-`include "parameters.svh"
 
 module CPU (
     input logic clk,
@@ -20,10 +19,10 @@ module CPU (
     logic [4:0]  ALU_Op;
     
     // Instruction fields
-    logic [6:0]                            opcode;
-    logic [REGISTER_FILE_ADDR_WIDTH - 1:0] rs1, rs2, rd;
-    logic [2:0]                            funct3;
-    logic [6:0]                            funct7;
+    logic [6:0]                  opcode;
+    logic [REG_ADDR_WIDTH - 1:0] rs1, rs2, rd;
+    logic [2:0]                  funct3;
+    logic [6:0]                  funct7;
     
     // Extract instruction fields
     assign opcode = instruction[6:0];
@@ -37,7 +36,18 @@ module CPU (
     logic [DATA_WIDTH - 1:0] read_data1, read_data2;
     // Data Memory -> Register File signals
     logic [DATA_WIDTH - 1:0] reg_write_data;
-    assign reg_write_data = (jal_jump || jalr_jump) ? (pc + 'd4) : MemtoReg ? mem_read_data : alu_result;
+    
+    always_comb begin
+        if((jal_jump || jalr_jump) == 1) begin
+            reg_write_data = pc + ADDR_WIDTH'(4);
+        end
+        else if(MemtoReg == 1) begin
+            reg_write_data = mem_read_data;
+        end
+        else begin
+            reg_write_data = alu_result;
+        end
+    end
     
     // Sign-extended Immediate
     logic [DATA_WIDTH - 1:0] immediate;
