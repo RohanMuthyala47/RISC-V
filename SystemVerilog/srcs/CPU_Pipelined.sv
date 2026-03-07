@@ -1,5 +1,4 @@
 import cpu_pkg::*;
-`include "parameters.svh"
 
 module CPU_Pipelined (
     input logic clk,
@@ -64,8 +63,8 @@ module CPU_Pipelined (
     
     always_ff @(posedge clk) begin
         if(rst) begin
-            PC_IF_ID          <= {ADDR_WIDTH{1'b0}};
-            Instruction_IF_ID <= {INSTR_WIDTH{1'b0}};
+            PC_IF_ID          <= ADDR_WIDTH'(0);
+            Instruction_IF_ID <= INSTR_WIDTH'(0);
         end
         else begin
             PC_IF_ID          <= PC_IF;
@@ -84,10 +83,10 @@ module CPU_Pipelined (
     assign Instruction_ID =   Instruction_IF_ID;
     
     // Instruction fields
-    logic [6:0]                            opcode;
-    logic [REGISTER_FILE_ADDR_WIDTH - 1:0] rs1, rs2, rd_ID;
-    logic [2:0]                            funct3_ID;
-    logic [6:0]                            funct7;
+    logic [6:0]                  opcode;
+    logic [REG_ADDR_WIDTH - 1:0] rs1, rs2, rd_ID;
+    logic [2:0]                  funct3_ID;
+    logic [6:0]                  funct7;
     
     // Extract instruction fields
     assign opcode    = Instruction_ID[6:0];
@@ -122,7 +121,18 @@ module CPU_Pipelined (
     // Register File signals
     logic [DATA_WIDTH - 1:0] read_data1_ID, read_data2_ID;
     logic [DATA_WIDTH - 1:0] reg_write_data;
-    assign reg_write_data = (jal_jump_WB || jalr_jump_WB) ? (PC_WB + ADDR_WIDTH'(4)) : MemtoReg_WB ? mem_read_data_WB : alu_result_WB;
+    
+    always_comb begin
+        if((jal_jump_WB || jalr_jump_WB) == 1) begin
+            reg_write_data = PC_WB + ADDR_WIDTH'(4);
+        end
+        else if(MemtoReg_WB == 1) begin
+            reg_write_data = mem_read_data_WB;
+        end
+        else begin
+            reg_write_data = alu_result_WB;
+        end
+    end
     
     // Register File
     RegisterFile regfile_inst (
@@ -148,28 +158,28 @@ module CPU_Pipelined (
     );
     
     // ID-EX PIPELINE REGISTERS(2-3)
-    logic [ADDR_WIDTH - 1:0]               PC_ID_E;
+    logic [ADDR_WIDTH - 1:0]     PC_ID_E;
     
-    logic [REGISTER_FILE_ADDR_WIDTH - 1:0] rd_ID_E;
+    logic [REG_ADDR_WIDTH - 1:0] rd_ID_E;
     
-    logic [2:0]                            funct3_ID_E;
+    logic [2:0]                  funct3_ID_E;
     
-    logic                                  MemRead_ID_E;
-    logic                                  MemtoReg_ID_E;
-    logic                                  MemWrite_ID_E;
-    logic                                  RegWrite_ID_E;
+    logic                        MemRead_ID_E;
+    logic                        MemtoReg_ID_E;
+    logic                        MemWrite_ID_E;
+    logic                        RegWrite_ID_E;
     
-    logic [4:0]                            ALU_Op_ID_E;
+    logic [4:0]                  ALU_Op_ID_E;
     
-    logic [DATA_WIDTH - 1:0]               read_data1_ID_E, read_data2_ID_E;
+    logic [DATA_WIDTH - 1:0]     read_data1_ID_E, read_data2_ID_E;
     
-    logic [DATA_WIDTH - 1:0]               Immediate_ID_E;
+    logic [DATA_WIDTH - 1:0]     Immediate_ID_E;
     
     always_ff @(posedge clk)begin
         if(rst) begin
-            PC_ID_E         <= {ADDR_WIDTH{1'b0}};
+            PC_ID_E         <= ADDR_WIDTH'(0);
             
-            rd_ID_E         <= {REGISTER_FILE_ADDR_WIDTH{1'b0}};
+            rd_ID_E         <= REG_ADDR_WIDTH'(0);
             
             funct3_ID_E     <= 3'b0;
             
@@ -180,10 +190,10 @@ module CPU_Pipelined (
             
             ALU_Op_ID_E     <= 5'b0;
             
-            read_data1_ID_E <= {DATA_WIDTH{1'b0}};
-            read_data2_ID_E <= {DATA_WIDTH{1'b0}};
+            read_data1_ID_E <= DATA_WIDTH'(0);
+            read_data2_ID_E <= DATA_WIDTH'(0);
             
-            Immediate_ID_E  <= {DATA_WIDTH{1'b0}};
+            Immediate_ID_E  <= DATA_WIDTH'(0);
         end
         else begin
             PC_ID_E         <= PC_ID;
@@ -210,17 +220,17 @@ module CPU_Pipelined (
     // Stage 3 logic
     ///////////////////////////////////////////////////////////////////////////////
     
-    logic [ADDR_WIDTH - 1:0] PC_E;
-    logic [4:0]              rd_E;
-    logic [2:0]              funct3_E;
-    logic                    MemRead_E;
-    logic                    MemtoReg_E;
-    logic                    MemWrite_E;
-    logic                    RegWrite_E;
-    logic [4:0]              ALU_Op_E;
-    logic [DATA_WIDTH - 1:0] read_data1_E;
-    logic [DATA_WIDTH - 1:0] read_data2_E;
-    logic [DATA_WIDTH - 1:0] Immediate_E;
+    logic [ADDR_WIDTH - 1:0]     PC_E;
+    logic [REG_ADDR_WIDTH - 1:0] rd_E;
+    logic [2:0]                  funct3_E;
+    logic                        MemRead_E;
+    logic                        MemtoReg_E;
+    logic                        MemWrite_E;
+    logic                        RegWrite_E;
+    logic [4:0]                  ALU_Op_E;
+    logic [DATA_WIDTH - 1:0]     read_data1_E;
+    logic [DATA_WIDTH - 1:0]     read_data2_E;
+    logic [DATA_WIDTH - 1:0]     Immediate_E;
     
     assign PC_E         = PC_ID_E;
     assign rd_E         = rd_ID_E;
@@ -257,40 +267,40 @@ module CPU_Pipelined (
     );
     
     // EX-MEM PIPELINE REGISTERS
-    logic [ADDR_WIDTH - 1:0]               PC_E_M;
+    logic [ADDR_WIDTH - 1:0]     PC_E_M;
     
-    logic [REGISTER_FILE_ADDR_WIDTH - 1:0] rd_E_M;
+    logic [REG_ADDR_WIDTH - 1:0] rd_E_M;
     
-    logic [2:0]                            funct3_E_M;
+    logic [2:0]                  funct3_E_M;
     
-    logic [DATA_WIDTH - 1:0]               read_data2_E_M;
+    logic [DATA_WIDTH - 1:0]     read_data2_E_M;
     
-    logic                                  MemRead_E_M;
-    logic                                  MemtoReg_E_M;
-    logic                                  MemWrite_E_M;
-    logic                                  RegWrite_E_M;
+    logic                        MemRead_E_M;
+    logic                        MemtoReg_E_M;
+    logic                        MemWrite_E_M;
+    logic                        RegWrite_E_M;
     
-    logic [DATA_WIDTH - 1:0]               alu_result_E_M;
+    logic [DATA_WIDTH - 1:0]     alu_result_E_M;
     
-    logic                                  jal_jump_E_M;
-    logic                                  jalr_jump_E_M;
+    logic                        jal_jump_E_M;
+    logic                        jalr_jump_E_M;
     
     always_ff @(posedge clk) begin
         if(rst) begin
-            PC_E_M         <= {ADDR_WIDTH{1'b0}};
+            PC_E_M         <= ADDR_WIDTH'(0);
             
-	        rd_E_M         <= {REGISTER_FILE_ADDR_WIDTH{1'b0}};
+	        rd_E_M         <= REG_ADDR_WIDTH'(0);
 	    
             funct3_E_M     <= 3'b0;
             
-            read_data2_E_M <= {DATA_WIDTH{1'b0}};
+            read_data2_E_M <= DATA_WIDTH'(0);
             
             MemRead_E_M    <= 1'b0;
             MemtoReg_E_M   <= 1'b0;
             MemWrite_E_M   <= 1'b0;
             RegWrite_E_M   <= 1'b0;
             
-            alu_result_E_M <= {DATA_WIDTH{1'b0}};
+            alu_result_E_M <= DATA_WIDTH'(0);
             
             jal_jump_E_M   <= 1'b0;
             jalr_jump_E_M  <= 1'b0;
@@ -319,17 +329,17 @@ module CPU_Pipelined (
     ///////////////////////////////////////////////////////////////////////////////
     // Stage 4 logic
     ///////////////////////////////////////////////////////////////////////////////
-    logic [ADDR_WIDTH - 1:0]               PC_M;
-    logic [REGISTER_FILE_ADDR_WIDTH - 1:0] rd_M;
-    logic [2:0]                            funct3_M;
-    logic [DATA_WIDTH - 1:0]               read_data2_M;
-    logic                                  MemRead_M;
-    logic                                  MemtoReg_M;
-    logic                                  MemWrite_M;
-    logic                                  RegWrite_M;
-    logic [DATA_WIDTH - 1:0]               alu_result_M;
-    logic                                  jal_jump_M;
-    logic                                  jalr_jump_M;
+    logic [ADDR_WIDTH - 1:0]     PC_M;
+    logic [REG_ADDR_WIDTH - 1:0] rd_M;
+    logic [2:0]                  funct3_M;
+    logic [DATA_WIDTH - 1:0]     read_data2_M;
+    logic                        MemRead_M;
+    logic                        MemtoReg_M;
+    logic                        MemWrite_M;
+    logic                        RegWrite_M;
+    logic [DATA_WIDTH - 1:0]     alu_result_M;
+    logic                        jal_jump_M;
+    logic                        jalr_jump_M;
    
     assign PC_M         = PC_E_M;
     assign rd_M         = rd_E_M;
@@ -346,45 +356,46 @@ module CPU_Pipelined (
     DataMemory dmem_inst (
         .clk        (clk),
         .rst        (rst),
-
-        .funct3     (funct3_M),
         
         .MemRead    (MemRead_M),
         .MemWrite   (MemWrite_M),
         
         .address    (alu_result_M),
+        
         .write_data (read_data2_M),
-
+        
+        .funct3     (funct3_M),
+        
         .read_data  (mem_read_data_M)
     );
     
     // MEM-WB PIPELINE REGISTERS
-    logic [ADDR_WIDTH - 1:0]               PC_M_WB;
+    logic [ADDR_WIDTH - 1:0]     PC_M_WB;
     
-    logic [REGISTER_FILE_ADDR_WIDTH - 1:0] rd_M_WB;
+    logic [REG_ADDR_WIDTH - 1:0] rd_M_WB;
     
-    logic                                  MemtoReg_M_WB;
-    logic                                  RegWrite_M_WB;
+    logic                        MemtoReg_M_WB;
+    logic                        RegWrite_M_WB;
     
-    logic [DATA_WIDTH - 1:0]               alu_result_M_WB;
+    logic [DATA_WIDTH - 1:0]     alu_result_M_WB;
     
-    logic [DATA_WIDTH - 1:0]               mem_read_data_M_WB;
+    logic [DATA_WIDTH - 1:0]     mem_read_data_M_WB;
     
-    logic                                  jal_jump_M_WB;
-    logic                                  jalr_jump_M_WB;
+    logic                        jal_jump_M_WB;
+    logic                        jalr_jump_M_WB;
     
     always_ff @(posedge clk) begin
         if(rst) begin
-            PC_M_WB            <= {ADDR_WIDTH{1'b0}};
+            PC_M_WB            <= ADDR_WIDTH'(0);
             
-            rd_M_WB            <= {REGISTER_FILE_ADDR_WIDTH{1'b0}};
+            rd_M_WB            <= REG_ADDR_WIDTH'(0);
             
             MemtoReg_M_WB      <= 1'b0;
             RegWrite_M_WB      <= 1'b0;
             
-            alu_result_M_WB    <= {DATA_WIDTH{1'b0}};
+            alu_result_M_WB    <= DATA_WIDTH'(0);
             
-            mem_read_data_M_WB <= {DATA_WIDTH{1'b0}};
+            mem_read_data_M_WB <= DATA_WIDTH'(0);
             
             jal_jump_M_WB      <= 1'b0;
             jalr_jump_M_WB     <= 1'b0;
@@ -409,14 +420,14 @@ module CPU_Pipelined (
     ///////////////////////////////////////////////////////////////////////////////
     // Stage 5 logic
     ///////////////////////////////////////////////////////////////////////////////
-    logic [ADDR_WIDTH - 1:0]               PC_WB;
-    logic [REGISTER_FILE_ADDR_WIDTH - 1:0] rd_WB;
-    logic                                  MemtoReg_WB;
-    logic                                  RegWrite_WB;
-    logic [DATA_WIDTH - 1:0]               alu_result_WB;
-    logic [DATA_WIDTH - 1:0]               mem_read_data_WB;
-    logic                                  jal_jump_WB;
-    logic                                  jalr_jump_WB;
+    logic [ADDR_WIDTH - 1:0]     PC_WB;
+    logic [REG_ADDR_WIDTH - 1:0] rd_WB;
+    logic                        MemtoReg_WB;
+    logic                        RegWrite_WB;
+    logic [DATA_WIDTH - 1:0]     alu_result_WB;
+    logic [DATA_WIDTH - 1:0]     mem_read_data_WB;
+    logic                        jal_jump_WB;
+    logic                        jalr_jump_WB;
     
     assign PC_WB            = PC_M_WB;
     assign rd_WB            = rd_M_WB;
