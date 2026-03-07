@@ -1,5 +1,4 @@
 import cpu_pkg::*;
-`include "parameters.svh"
 
 module ControlUnit (
     input  opcode_t    opcode,
@@ -36,7 +35,7 @@ module ControlUnit (
                     10'b0100000_101: ALU_Op = ALU_SRA;
                     10'b0000000_010: ALU_Op = ALU_SLT;
                     10'b0000000_011: ALU_Op = ALU_SLTU;
-                    default:         ALU_Op = ALU_DEF;
+                    default        : ALU_Op = ALU_DEF;
                 endcase
             end
 
@@ -107,9 +106,7 @@ module ControlUnit (
                 ALU_Op   = ALU_LUI;
             end
 
-            default: begin
-                ALU_Op = ALU_DEF;
-            end
+            default: ALU_Op = ALU_DEF;
         endcase
     end
 
