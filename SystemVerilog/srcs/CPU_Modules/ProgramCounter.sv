@@ -1,4 +1,4 @@
-`include "parameters.svh"
+import cpu_pkg::*;
 
 module ProgramCounter (
     input  logic                    clk,
@@ -34,19 +34,16 @@ module ProgramCounter (
         end
         
         else begin
-            next_pc = pc + 'd4;
+            next_pc = pc + ADDR_WIDTH'(4);
         end
     end
 
     // Update Program Counter
     always_ff @(posedge clk) begin
-        if (rst) begin
-            pc <= {DATA_WIDTH{1'b0}};
-        end
-        
-        else begin
+        if (rst)
+            pc <= DATA_WIDTH'(0);
+        else
             pc <= next_pc;
-        end
     end
 
 endmodule
