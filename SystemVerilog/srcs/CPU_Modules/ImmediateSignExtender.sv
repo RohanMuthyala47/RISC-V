@@ -1,4 +1,4 @@
-`include "parameters.svh"
+import cpu_pkg::*;
 
 module ImmediateSignExtender (
     input  logic [ADDR_WIDTH - 1:0] instruction,
@@ -26,11 +26,11 @@ module ImmediateSignExtender (
 	    	U_TYPE_AUIPC, U_TYPE_LUI: // U-type
                 immediate = {instruction[31:12], 12'b0};
                 
-            J_TYPE: // J-type
+            J_TYPE: // J-type JAL
 				immediate = {{12{instruction[31]}}, instruction[19:12], instruction[20], instruction[30:21], 1'b0};
                 
             default: 
-                immediate = {DATA_WIDTH{1'b0}};
+                immediate = DATA_WIDTH'(0);
         endcase
     end
 
