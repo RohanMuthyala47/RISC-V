@@ -1,4 +1,4 @@
-`include "parameters.svh"
+import cpu_pkg::*;
 
 module InstructionMemory (
     input  logic [ADDR_WIDTH - 1:0]  pc,
@@ -8,7 +8,8 @@ module InstructionMemory (
 
     /* verilator lint_off WIDTHTRUNC */
 
-    logic [INSTR_WIDTH - 1:0] InstructionMemory [0 : MEMORY_SIZE - 1];
+    // Instruction Memory declaration
+    logic [INSTR_WIDTH - 1:0] InstructionMemory [0 : MEM_DEPTH - 1];
 
     initial begin
         $readmemh("program.hex", InstructionMemory);
