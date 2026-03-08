@@ -1,0 +1,51 @@
+import cpu_pkg::*;
+
+module ProgramCounter (
+    input  logic                    clk,
+    input  logic                    rst,
+    
+    input logic                     PCWrite,
+
+    input  logic                    branch_taken,
+    input  logic [ADDR_WIDTH - 1:0] branch_target,
+    
+    input  logic                    is_jal,
+    input  logic                    is_jalr,
+    input  logic [ADDR_WIDTH - 1:0] jal_target,
+    input  logic [ADDR_WIDTH - 1:0] jalr_target,
+    
+    output logic [ADDR_WIDTH - 1:0] pc
+);
+
+    logic [ADDR_WIDTH - 1:0]        next_pc;
+    
+    // Set program counter to branch target if branch instruction,
+    // jump target if jump instruction,
+    // otherwise increment by 4
+    always_comb begin
+    	if (branch_taken) begin
+            next_pc = branch_target;
+        end
+        
+        else if (is_jal) begin
+            next_pc = jal_target;
+        end
+        
+        else if (is_jalr) begin
+            next_pc = jalr_target;
+        end
+
+        else begin
+            next_pc = pc + ADDR_WIDTH'(4);
+        end
+    end
+
+    // Update Program Counter
+    always_ff @(posedge clk) begin
+        if (rst)
+            pc <= ADDR_WIDTH'(0);
+        else if(PCWrite)
+            pc <= next_pc;
+    end
+
+endmodule
