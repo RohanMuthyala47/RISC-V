@@ -38,10 +38,7 @@ module CPU (
     logic [DATA_WIDTH - 1:0] reg_write_data;
     
     always_comb begin
-        if((jal_jump || jalr_jump) == 1) begin
-            reg_write_data = pc + ADDR_WIDTH'(4);
-        end
-        else if(MemtoReg == 1) begin
+        if(MemtoReg == 1) begin
             reg_write_data = mem_read_data;
         end
         else begin
