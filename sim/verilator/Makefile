@@ -5,31 +5,53 @@ SIM ?= verilator
 #SIM ?= icarus
 TOPLEVEL_LANG ?= verilog
 
-# DUT=CPU, CPU_Pipelined, ProgramCounter, InstructionMemory, RegisterFile, ControlUnit, ImmediateSignExtender, DataMemory
-
+# Top RTL file
+# DUT=CPU_Pipelined, CPU_SingleCycle, ProgramCounter, InstructionMemory, RegisterFile, ControlUnit, ImmediateSignExtender, DataMemory
 DUT?=CPU_Pipelined
+# make DUT=CPU_Pipelined | DUT=CPU_SingleCycle
 
-VERILOG_SOURCES += /path/to/cpu_pkg.sv
-VERILOG_SOURCES += /path/to/CPU_Pipelined.sv
-VERILOG_SOURCES += /path/to/CPU.sv
-VERILOG_SOURCES += /path/to/ALU.sv
-VERILOG_SOURCES += /path/to/ControlUnit.sv
-VERILOG_SOURCES += /path/to/ProgramCounter.sv
-VERILOG_SOURCES += /path/to/RegisterFile.sv
-VERILOG_SOURCES += /path/to/InstructionMemory.sv
-VERILOG_SOURCES += /path/to/DataMemory.sv
-VERILOG_SOURCES += /path/to/ImmediateSignExtender.sv
-VERILOG_SOURCES += /path/to/ForwardingUnit.sv
-VERILOG_SOURCES += /path/to/AXI_if.sv
+ifndef RISC_V_DIR
+    $(error Please set RISC_V_DIR to the project root)
+endif
 
-#VERILOG_SOURCES += $(wildcard /path/to/rtl/*.sv)
+RTL = $(RISC_V_DIR)/rtl
 
-VERILOG_INCLUDE_DIRS = /path/to/includes/
+# Common rtl files
+COMMON_RTL = \
+    $(RTL)/cpu_pkg.sv \
+    $(RTL)/interface/AXI_Interface.sv
+
+# Memory/Cache rtl
+MEMORY_RTL = \
+    $(RTL)/memory/InstructionMemory.sv \
+    $(RTL)/memory/DataMemory.sv
+
+# Pipelined core rtl
+PIPELINED_CORE    = $(sort $(wildcard $(RTL)/pipelined_core/*.sv))
+# Single-cycle core rtl
+SINGLE_CYCLE_CORE = $(sort $(wildcard $(RTL)/single_cycle_core/*.sv))
+    
+ifeq ($(DUT),CPU_Pipelined)
+    CORE_RTL = $(PIPELINED_CORE)
+endif
+
+ifeq ($(DUT),CPU_SingleCycle)
+    CORE_RTL = $(SINGLE_CYCLE_CORE)
+endif
+
+ifndef CORE_RTL
+$(error Unknown DUT "$(DUT)". Supported: CPU_Pipelined CPU_SingleCycle)
+endif
+
+VERILOG_SOURCES = $(COMMON_RTL) $(MEMORY_RTL) $(CORE_RTL)
+
+# Set DEBUG=1 for debugging
+ifdef DEBUG
+$(info VERILOG_SOURCES=$(VERILOG_SOURCES))
+endif
 
 COCOTB_TOPLEVEL = $(DUT)
 
 COCOTB_TEST_MODULES = $(DUT)_tb
-
-#IVERILOG_COMPILE_ARGS = -g2012 -I../rtl
 
 include $(shell cocotb-config --makefiles)/Makefile.sim
