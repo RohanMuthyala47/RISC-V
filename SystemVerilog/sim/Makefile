@@ -19,6 +19,7 @@ VERILOG_SOURCES += /path/to/RegisterFile.sv
 VERILOG_SOURCES += /path/to/InstructionMemory.sv
 VERILOG_SOURCES += /path/to/DataMemory.sv
 VERILOG_SOURCES += /path/to/ImmediateSignExtender.sv
+VERILOG_SOURCES += /path/to/ForwardingUnit.sv
 VERILOG_SOURCES += /path/to/AXI_if.sv
 
 #VERILOG_SOURCES += $(wildcard /path/to/rtl/*.sv)
