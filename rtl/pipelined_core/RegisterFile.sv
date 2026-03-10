@@ -22,12 +22,13 @@ module RegisterFile(
     
     always_ff @(posedge clk) begin
         if(rst) begin
-            for(i = 0; i < REG_FILE_SIZE; i = i + 1) begin
+            for(i = 0; i < REG_FILE_SIZE; i = i + 1)
                 RegisterFile[i] <= DATA_WIDTH'(0);
-            end
         end
-        
-        else if(write_enable && (write_address != REG_ADDR_WIDTH'(0))) begin
+	end
+	
+    always_ff @(posedge clk) begin 
+        if(write_enable && (write_address != REG_ADDR_WIDTH'(0))) begin
             RegisterFile[write_address] <= write_data;
         end
     end
