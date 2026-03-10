@@ -25,9 +25,15 @@ module CPU_Pipelined (
     logic                    jalr_jump_E;
     logic [ADDR_WIDTH - 1:0] jal_target;
     logic [ADDR_WIDTH - 1:0] jalr_target;
+
+	// IF -> ID and ID -> E pipeline flush signals
+    logic                    flush_IFID, flush_IDEX;
     
     // Data Memory signals
     logic [DATA_WIDTH - 1:0] mem_read_data_M;
+    
+    assign flush_IFID = branch_taken || jalr_jump_E || jal_jump_E;
+	assign flush_IDEX = branch_taken || jalr_jump_E;
     
     ///////////////////////////////////////////////////////////////////////////////
     // Stage 1 logic
@@ -69,7 +75,7 @@ module CPU_Pipelined (
     logic [INSTR_WIDTH - 1:0] Instruction_IF_ID;
     
     always_ff @(posedge clk) begin
-        if(rst) begin
+		if(rst || flush_IFID) begin
             PC_IF_ID          <= ADDR_WIDTH'(0);
             Instruction_IF_ID <= INSTR_WIDTH'(0);
         end
@@ -154,20 +160,6 @@ module CPU_Pipelined (
         end
     end
     
-    /*
-    always_comb begin
-        if((jal_jump_WB || jalr_jump_WB) == 1) begin
-            reg_write_data = PC_WB + ADDR_WIDTH'(4);
-        end
-        else if(MemtoReg_WB == 1) begin
-            reg_write_data = mem_read_data_WB;
-        end
-        else begin
-            reg_write_data = alu_result_WB;
-        end
-    end
-    */
-    
     // Register File
     RegisterFile regfile_inst (
         .clk           (clk),
@@ -210,7 +202,7 @@ module CPU_Pipelined (
     logic [DATA_WIDTH - 1:0]     Immediate_ID_E;
     
     always_ff @(posedge clk)begin
-        if(rst) begin
+        if(rst || flush_IDEX) begin
             PC_ID_E         <= ADDR_WIDTH'(0);
             
             rs1_ID_E        <= REG_ADDR_WIDTH'(0);
@@ -291,22 +283,22 @@ module CPU_Pipelined (
     logic [1:0]              ForwardA, ForwardB;
     
     always_comb begin
+    	op1 = read_data1_E;
+
     	if(ForwardA == 2'b10)
-    		op1 = alu_result_M;
+        	op1 = alu_result_M;
     	else if(ForwardA == 2'b01)
-    		op1 = reg_write_data;
-    	else
-    		op1 = read_data2_E;
-    end
+        	op1 = reg_write_data;
+	end
     
     always_comb begin
+    	op2 = read_data2_E;
+
     	if(ForwardB == 2'b10)
-    		op2 = alu_result_M;
+        	op2 = alu_result_M;
     	else if(ForwardB == 2'b01)
-    		op2 = reg_write_data;
-    	else
-    		op2 = read_data2_E;    		
-    end
+        	op2 = reg_write_data;
+	end
     
     // ALU
     ALU alu_inst (
