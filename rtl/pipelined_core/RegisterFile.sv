@@ -33,8 +33,27 @@ module RegisterFile(
     end
     
     always_comb begin
-        read_data1 = (read_address1 == REG_ADDR_WIDTH'(0)) ? DATA_WIDTH'(0) : RegisterFile[read_address1];
-        read_data2 = (read_address2 == REG_ADDR_WIDTH'(0)) ? DATA_WIDTH'(0) : RegisterFile[read_address2];
+    	read_data1 = DATA_WIDTH'(0);
+    	if(read_address1 != REG_ADDR_WIDTH'(0)) begin
+    		if(read_address1 == write_address) begin
+    			read_data1 = write_data;
+    		end
+    		else begin
+    			read_data1 = RegisterFile[read_address1];
+    		end
+    	end
+    end
+	
+	always_comb begin
+    	read_data2 = DATA_WIDTH'(0);
+    	if(read_address2 != REG_ADDR_WIDTH'(0)) begin
+    		if(read_address2 == write_address) begin
+    			read_data2 = write_data;
+    		end
+    		else begin
+    			read_data2 = RegisterFile[read_address2];
+    		end
+    	end
     end
 
 endmodule
