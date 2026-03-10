@@ -13,7 +13,7 @@ module RegisterFile(
     
     output logic [DATA_WIDTH - 1:0]     read_data1,
     output logic [DATA_WIDTH - 1:0]     read_data2
-    );
+);
     
     // Register File declaration
     logic [DATA_WIDTH - 1:0] RegisterFile [0:REG_FILE_SIZE - 1];
