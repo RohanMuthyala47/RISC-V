@@ -1,6 +1,6 @@
 import cpu_pkg::*;
 
-module CPU (
+module CPU_SingleCycle (
     input logic clk,
     input logic rst
 );
