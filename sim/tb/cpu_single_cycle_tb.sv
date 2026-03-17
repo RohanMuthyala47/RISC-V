@@ -4,7 +4,7 @@ module CPU_TestBench;
     reg clk;
     reg rst;
 
-    CPU dut(clk, rst);
+    CPU_SingleCycle dut(clk, rst);
 
     always #5 clk = ~clk;
 
