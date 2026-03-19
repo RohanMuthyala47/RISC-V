@@ -1,16 +1,21 @@
 package cpu_pkg;
 
-    parameter DATA_WIDTH     = 32;
-    parameter ADDR_WIDTH     = 32;
-    parameter INSTR_WIDTH    = 32;
+    parameter DATA_WIDTH        = 32;
+    parameter ADDR_WIDTH        = 32;
+    parameter INSTR_WIDTH       = 32;
+    
+    parameter ID_WIDTH          = 4; // AXI ID bus width
 
-    parameter REG_FILE_SIZE  = 32;
-    parameter REG_ADDR_WIDTH = $clog2(REG_FILE_SIZE);
+    parameter REG_FILE_SIZE     = 32;
+    parameter REG_ADDR_WIDTH    = $clog2(REG_FILE_SIZE);
 
-    parameter MEM_DEPTH      = 1024;
-    parameter MEM_ADDR_WIDTH = $clog2(MEM_DEPTH);
+    parameter MEM_DEPTH         = 1024;
+    parameter MEM_ADDR_WIDTH    = $clog2(MEM_DEPTH);
 
-    parameter CACHE_SIZE     = 128;
+    parameter CACHE_LINES       = 128;
+    parameter CACHE_INDEX_BITS  = $clog2(CACHE_LINES);
+    parameter CACHE_OFFSET_BITS = 2;
+    parameter CACHE_TAG_BITS    = ADDR_WIDTH - CACHE_INDEX_BITS - CACHE_OFFSET_BITS;
 
     typedef enum logic [6:0] {
 		R_TYPE       = 7'b0110011,
@@ -68,8 +73,15 @@ package cpu_pkg;
         // Default
         ALU_DEF   = 5'b11111
     } alu_op_t;
-    	
-
+    
+    typedef enum logic [2:0] {
+		IDLE,
+		CHECK,
+		RD_REQ,
+		RD_DATA,
+		RD_COMPLETE
+    } icache_state_t;
+	
     typedef enum logic [2:0] {
 		IDLE,
 		WR_REQ,
@@ -77,6 +89,6 @@ package cpu_pkg;
 		WR_WAIT_RESP,
 		RD_REQ,
 		RD_DATA
-    } cache_state_t;
+    } dcache_state_t;
 
 endpackage
