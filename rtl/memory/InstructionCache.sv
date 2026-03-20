@@ -35,8 +35,8 @@ module InstructionCache (
 	assign cache_line_tag   = cache_tag_array  [addr_index];
 	assign cache_line_data  = cache_data_array [addr_index];
 	
-	logic  tag_match;
-	assign tag_match = cache_line_valid && (cache_line_tag == addr_tag);
+	logic  hit;
+	assign hit = cache_line_valid && (cache_line_tag == addr_tag);
 	
 	icache_state_t curr_state, next_state;
 	
@@ -53,7 +53,7 @@ module InstructionCache (
     	case (curr_state)
         	IDLE: next_state        = cpu_addr_req ? CHECK : IDLE;
 
-        	CHECK: next_state       = tag_match ? (cpu_addr_req ? CHECK : IDLE) : RD_REQ;
+        	CHECK: next_state       = hit ? (cpu_addr_req ? CHECK : IDLE) : RD_REQ;
 
         	RD_REQ: next_state      = axi.ARREADY ? RD_DATA : RD_REQ;
 
