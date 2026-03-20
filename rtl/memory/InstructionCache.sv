@@ -23,9 +23,9 @@ module InstructionCache (
 	logic [CACHE_INDEX_BITS - 1:0]  addr_index;
 	logic [CACHE_OFFSET_BITS - 1:0] addr_offset;
 	
-	assign addr_tag    = addr[ADDR_WIDTH - 1 : CACHE_INDEX_BITS + CACHE_OFFSET_BITS];
-	assign addr_index  = addr[CACHE_INDEX_BITS + CACHE_OFFSET_BITS - 1 : CACHE_OFFSET_BITS];
-	assign addr_offset = addr[CACHE_OFFSET_BITS - 1 : 0];
+	assign addr_tag    = addr[ADDR_WIDTH - 1:CACHE_INDEX_BITS + CACHE_OFFSET_BITS];
+	assign addr_index  = addr[CACHE_INDEX_BITS + CACHE_OFFSET_BITS - 1:CACHE_OFFSET_BITS];
+	assign addr_offset = addr[CACHE_OFFSET_BITS - 1:0];
 	
 	logic                        cache_line_valid;
 	logic [CACHE_TAG_BITS - 1:0] cache_line_tag;
@@ -89,7 +89,7 @@ module InstructionCache (
                 	instruction = cache_line_data[INSTR_WIDTH - 1:0];
             	end 
             	else begin
-                	stall = 1'b1;
+                	stall       = 1'b1;
             	end
         	end
 
@@ -121,9 +121,9 @@ module InstructionCache (
     	end 
     	else begin
         	if (curr_state == RD_DATA && axi.RVALID && axi.RLAST) begin
-            	cache_valid_array [addr_index] <= 1'b1;
-            	cache_tag_array   [addr_index] <= addr_tag;
-            	cache_data_array  [addr_index] <= axi.RDATA;
+            	cache_valid_array[addr_index] <= 1'b1;
+            	cache_tag_array  [addr_index] <= addr_tag;
+            	cache_data_array [addr_index] <= axi.RDATA;
         	end
     	end
 	end
