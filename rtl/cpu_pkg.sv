@@ -84,11 +84,13 @@ package cpu_pkg;
 	
     typedef enum logic [2:0] {
 		IDLE,
+		CHECK,
 		WR_REQ,
 		WR_DATA,
-		WR_WAIT_RESP,
+		WR_RESP,
 		RD_REQ,
-		RD_DATA
+		RD_DATA,
+		RD_COMPLETE
     } dcache_state_t;
 
 endpackage
