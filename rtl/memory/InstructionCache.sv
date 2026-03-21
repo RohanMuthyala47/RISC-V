@@ -51,17 +51,17 @@ module InstructionCache (
     	next_state = curr_state;
 
     	case (curr_state)
-        	IDLE: next_state        = cpu_addr_req ? CHECK : IDLE;
+        	IDLE:        next_state = cpu_addr_req ? CHECK : IDLE;
 
-        	CHECK: next_state       = hit ? (cpu_addr_req ? CHECK : IDLE) : RD_REQ;
+        	CHECK:       next_state = hit ? (cpu_addr_req ? CHECK : IDLE) : RD_REQ;
+			
+        	RD_REQ:      next_state = axi.ARREADY ? RD_DATA : RD_REQ;
 
-        	RD_REQ: next_state      = axi.ARREADY ? RD_DATA : RD_REQ;
-
-        	RD_DATA: next_state     = (axi.RLAST && axi.RVALID) ? RD_COMPLETE : RD_DATA;
+        	RD_DATA:     next_state = (axi.RLAST && axi.RVALID) ? RD_COMPLETE : RD_DATA;
 
         	RD_COMPLETE: next_state = cpu_addr_req ? CHECK : IDLE;
 
-        	default: next_state     = IDLE;
+        	default:     next_state = IDLE;
         	
     	endcase
 	end
@@ -89,7 +89,7 @@ module InstructionCache (
                 	instruction = cache_line_data[INSTR_WIDTH - 1:0];
             	end 
             	else begin
-                	stall       = 1'b1;
+                	stall = 1'b1;
             	end
         	end
 
