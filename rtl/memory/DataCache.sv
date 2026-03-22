@@ -46,7 +46,7 @@ module DataCache (
 	logic  hit;
 	assign hit = cache_line_valid && (cache_line_tag == addr_tag);
 	
-	dcache_state_t curr_state, next_state;
+	cache_state_t curr_state, next_state;
 	
 	always_ff @(posedge clk) begin
 	    if(rst)
