@@ -73,24 +73,16 @@ package cpu_pkg;
         // Default
         ALU_DEF   = 5'b11111
     } alu_op_t;
-    
-    typedef enum logic [2:0] {
-		IDLE,
-		CHECK,
-		RD_REQ,
-		RD_DATA,
-		RD_COMPLETE
-    } icache_state_t;
 	
     typedef enum logic [2:0] {
-		IDLE,
-		CHECK,
-		WR_REQ,
-		WR_DATA,
-		WR_RESP,
-		RD_REQ,
-		RD_DATA,
-		RD_COMPLETE
-    } dcache_state_t;
+		IDLE        = 3'b000,
+		CHECK       = 3'b001,
+		WR_REQ      = 3'b010,
+		WR_DATA     = 3'b011,
+		WR_RESP     = 3'b100,
+		RD_REQ      = 3'b101,
+		RD_DATA     = 3'b110,
+		RD_COMPLETE = 3'b111
+    } cache_state_t;
 
 endpackage
