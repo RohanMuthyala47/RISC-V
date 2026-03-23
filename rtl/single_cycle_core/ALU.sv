@@ -52,8 +52,8 @@ module ALU (
             ALU_BNE   :  branch_taken = op1 != op2;
             ALU_BLT   :  branch_taken = $signed(op1) < $signed(op2);
             ALU_BGE   :  branch_taken = $signed(op1) >= $signed(op2);
-            ALU_BLTU  :  branch_taken = op1 < op2);
-            ALU_BGEU  :  branch_taken = op1 >= op2);
+            ALU_BLTU  :  branch_taken = op1 < op2;
+            ALU_BGEU  :  branch_taken = op1 >= op2;
 
             ALU_LUI  :  alu_result   = immediate;
             ALU_AUIPC:  alu_result   = pc + immediate;
